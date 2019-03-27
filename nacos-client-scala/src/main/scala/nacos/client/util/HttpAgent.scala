@@ -4,7 +4,9 @@ import java.nio.charset.StandardCharsets
 
 import com.typesafe.config.Config
 import requests.RequestBlob.EmptyRequestBlob
-import requests.{ Request, RequestBlob, Response }
+import requests.{Request, RequestBlob, Response}
+
+import scala.util.Random
 
 case class WrapResponse(response: Response) extends AnyVal {
   def is2xx: Boolean        = (response.statusCode >> 2) == 2
@@ -16,28 +18,29 @@ case class WrapResponse(response: Response) extends AnyVal {
   def text: String          = response.text(StandardCharsets.UTF_8)
 }
 
-final class Http private (val setting: NacosSetting) {
-  private var _isHealth = true
+final class HttpAgent private (val setting: NacosSetting) {
+  private var _isHealth           = true
+  val serverAddrs: Vector[String] = setting.serverAddr.split(',').toVector
+  val name: String                = serverAddrs.map(_.replace(':', '_')).mkString("-")
+  def isHealth: Boolean           = _isHealth
 
-  def isHealth: Boolean = _isHealth
-
-  def request(path: String, queries: Seq[(String, String)] = Nil): Request =
-    Request(generateUrl(path), params = queries)
+  def request(path: String, queries: Seq[(String, String)] = Nil, headers: Seq[(String, String)] = Nil): Request =
+    Request(path, params = queries, headers = headers)
 
   def get(request: Request): WrapResponse = {
-    wrapResponse(requests.get(request, EmptyRequestBlob))
+    wrapResponse(requests.get(wrapRequest(request), EmptyRequestBlob))
   }
 
   def post(request: Request, data: RequestBlob): WrapResponse = {
-    wrapResponse(requests.post(request, data))
+    wrapResponse(requests.post(wrapRequest(request), data))
   }
 
   def put(request: Request, data: RequestBlob): WrapResponse = {
-    wrapResponse(requests.put(request, data))
+    wrapResponse(requests.put(wrapRequest(request), data))
   }
 
   def delete(request: Request): WrapResponse = {
-    wrapResponse(requests.delete(request, EmptyRequestBlob))
+    wrapResponse(requests.delete(wrapRequest(request), EmptyRequestBlob))
   }
 
   private def wrapResponse(response: Response): WrapResponse = {
@@ -45,20 +48,22 @@ final class Http private (val setting: NacosSetting) {
     WrapResponse(response)
   }
 
-  private def generateUrl(path: String): String = {
+  private def wrapRequest(request: Request): Request = {
+    val path = request.url
     val sb = StringBuilder.newBuilder
     sb.append(if (setting.secure) "https" else "http")
     sb.append("://")
-    sb.append(setting.serverAddr)
+    sb.append(serverAddrs(Random.nextInt(serverAddrs.size)))
     if (path.head != '/') {
       sb.append('/')
     }
     sb.append(path)
-    sb.toString()
+    val url = sb.toString()
+    request.copy(url = url)
   }
 
 }
 
-object Http {
-  def apply(config: Config): Http = new Http(NacosSetting(config))
+object HttpAgent {
+  def apply(config: Config): HttpAgent = new HttpAgent(NacosSetting(config))
 }

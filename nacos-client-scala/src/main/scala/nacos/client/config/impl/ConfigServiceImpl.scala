@@ -1,11 +1,16 @@
 package nacos.client.config.impl
 
 import com.typesafe.config.Config
-import nacos.client.config.{ConfigService, Listener}
-import nacos.client.constant.{ApiConstants, Constants, Params}
+import nacos.client.config.{ ConfigService, Listener }
+import nacos.client.constant.{ ApiConstants, Constants, Params }
 import nacos.client.util._
 
-case class ConfigId(dataId: String, group: String, namespace: Option[String])
+import scala.util.Try
+
+case class ConfigId(dataId: String, group: String, namespace: Option[String]) {
+  def toParams: List[(String, String)] =
+    namespace.foldLeft(List(Params.DATA_ID -> dataId, Params.GROUP -> group))((vec, ns) => vec :+ Params.TENANT -> ns)
+}
 
 case class ConfigContent(content: String, md5: String)
 object ConfigContent {
@@ -16,7 +21,7 @@ object ConfigContent {
   }
 }
 
-final class ConfigServiceImpl(val config: Config, val agent: Http) extends ConfigService {
+final class ConfigServiceImpl(val config: Config, val agent: HttpAgent) extends ConfigService {
   private val worker = new ClientWorker(agent.setting, agent)
 
   /**
@@ -27,15 +32,8 @@ final class ConfigServiceImpl(val config: Config, val agent: Http) extends Confi
    * @param timeoutMs read timeout (miiliseconds)
    * @return config value
    */
-  override def getConfig(dataId: String, group: String, timeoutMs: Int): String = {
-    worker.getConfig(dataId, group)
-  }
-
-  override def getConfig: String =
-    getConfig(
-      cc.dataId.getOrElse("need parameter: dataId or data-id"),
-      cc.group.getOrElse(Constants.DEFAULT_GROUP),
-      cc.timeoutMs)
+  override def getConfig(dataId: String, group: String, timeoutMs: Int): Try[String] =
+    worker.getConfig(ConfigId(dataId, group, agent.setting.namespace))
 
   /**
    * Add a listener to the configuration, after the server modified the
@@ -49,9 +47,8 @@ final class ConfigServiceImpl(val config: Config, val agent: Http) extends Confi
    * @param group    group
    * @param listener listener
    */
-  override def addListener(dataId: String, group: String, listener: Listener): Listener = {
+  override def addListener(dataId: String, group: String, listener: Listener): Listener =
     worker.addListener(dataId, group, listener)
-  }
 
   /**
    * Publish config.

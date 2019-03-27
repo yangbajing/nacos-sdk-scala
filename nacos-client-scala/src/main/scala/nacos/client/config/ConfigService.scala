@@ -3,10 +3,12 @@ package nacos.client.config
 import com.typesafe.config.Config
 import nacos.client.config.impl.ConfigServiceImpl
 import nacos.client.constant.Constants
-import nacos.client.util.Http
+import nacos.client.util.HttpAgent
+
+import scala.util.Try
 
 trait ConfigService {
-  def agent: Http
+  def agent: HttpAgent
 
   /**
    * Get config
@@ -16,9 +18,8 @@ trait ConfigService {
    * @param timeoutMs read timeout
    * @return config value
    */
-  def getConfig(dataId: String, group: String, timeoutMs: Int): String
-  def getConfig(dataId: String, group: String): String = getConfig(dataId, group, Constants.TIMEOUT_MS)
-  def getConfig: String
+  def getConfig(dataId: String, group: String, timeoutMs: Int): Try[String]
+  def getConfig(dataId: String, group: String): Try[String] = getConfig(dataId, group, Constants.TIMEOUT_MS)
 
   /**
    * Add a listener to the configuration, after the server modified the
@@ -72,5 +73,5 @@ trait ConfigService {
 }
 
 object ConfigService {
-  def apply(config: Config): ConfigService = new ConfigServiceImpl(config, Http(config))
+  def apply(config: Config): ConfigService = new ConfigServiceImpl(config, HttpAgent(config))
 }

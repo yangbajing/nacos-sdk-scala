@@ -13,7 +13,5 @@ class PubSub[TOPIC, MSG] {
   def send(topic: TOPIC, msg: MSG) = {
     topics.get(topic).foreach(funcs => funcs.foreach(_.func(msg)))
   }
-  def send(msg: MSG) = {
-
-  }
+  def send(msg: MSG) = {}
 }

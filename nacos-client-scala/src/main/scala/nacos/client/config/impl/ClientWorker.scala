@@ -1,12 +1,35 @@
 package nacos.client.config.impl
 
+import java.util.concurrent.{ Executors, TimeUnit }
+
 import nacos.client.config.Listener
 import nacos.client.constant.{ ApiConstants, Constants, Headers, Params }
-import nacos.client.util.{ Http, NacosException, NacosSetting, StringUtils }
+import nacos.client.util._
 
-final class ClientWorker(setting: NacosSetting, agent: Http) {
+import scala.util.{ Failure, Success, Try }
+
+final class ClientWorker(setting: NacosSetting, agent: HttpAgent) {
   @volatile private var cache     = Map.empty[ConfigId, ConfigContent]
   @volatile private var listeners = Map.empty[ConfigId, Set[Listener]]
+  private val executor            = Executors.newFixedThreadPool(2)
+  private val scheduledExecutor = Executors.newScheduledThreadPool(1, (r: Runnable) => {
+    val t = new Thread(r)
+    t.setName(s"nacos.client.worker.${agent.name}")
+    t.setDaemon(true)
+    t
+  })
+  init()
+
+  private def init(): Unit = {
+    scheduledExecutor.scheduleWithFixedDelay(() => {
+      try {
+        checkConfigs()
+      } catch {
+        case e: Throwable =>
+          e.printStackTrace()
+      }
+    }, 1L, 10L, TimeUnit.MILLISECONDS)
+  }
 
   def updateCache(configId: ConfigId, configContent: ConfigContent): Unit =
     cache = cache.updated(configId, configContent)
@@ -16,27 +39,8 @@ final class ClientWorker(setting: NacosSetting, agent: Http) {
   def getCache(configId: ConfigId): Option[ConfigContent] = cache.get(configId)
 
   def addListener(dataId: String, group: String, listener: Listener): Listener = {
-    // TODO 多个listener的控制
-    val request = agent
-      .request(ApiConstants.CONFIG_CONTROLLER_LISTENER_PATH)
-      .copy(headers = List(Headers.LONG_PULLING_TIMEOUT -> Constants.TIMEOUT_MS.toString))
     val configId = ConfigId(dataId, group, setting.namespace)
-    val payload  = generateListeningConfigs(configId)
-
-    // 线程调度
-    // TODO 从cache中获取所有ConfigId和配置，一次批量监控所有配置的变化状态
-    val response = agent.post(request, List(Params.LISTENING_CONFIGS -> payload))
-    if (response.is2xx) {
-      val confStr = response.text
-      if (StringUtils.isNoneBlank(confStr)) {
-        updateCache(configId, ConfigContent(confStr))
-        for {
-          list <- listeners.get(configId)
-          func <- list
-        } func(confStr)
-      }
-    }
-
+    listeners = listeners.updated(configId, listeners.getOrElse(configId, Set()) + listener)
     listener
   }
 
@@ -49,19 +53,48 @@ final class ClientWorker(setting: NacosSetting, agent: Http) {
     }
   }
 
-  private def generateListeningConfigs(configId: ConfigId): String = {
+  private def checkConfigs(): Unit = {
+    val request = agent.request(ApiConstants.CONFIG_CONTROLLER_LISTENER_PATH, headers = List(Headers.LONG_PULLING_TIMEOUT -> Constants.TIMEOUT_MS.toString))
+    val payload = listeners.keysIterator.map(configId => idToString(configId)).mkString(Constants.LINE_SEPARATOR)
+
+    val response = agent.post(request, List(Params.LISTENING_CONFIGS -> payload))
+    if (response.is2xx) {
+      for {
+        text     <- StringUtils.option(response.text)
+        line     <- text.split(Constants.LINE_SEPARATOR)
+        configId <- parseConfigId(line)
+      } dispatch(configId)
+    }
+  }
+
+  private def dispatch(configId: ConfigId): Unit = getConfig(configId) match {
+    case Success(confStr) =>
+      for {
+        items    <- listeners.get(configId)
+        listener <- items
+      } listener(confStr)
+    case Failure(e) => e.printStackTrace()
+  }
+
+  private def parseConfigId(line: String): Option[ConfigId] = line.split(Constants.WORD_SEPARATOR) match {
+    case Array(dataId, group, tenant) => Some(ConfigId(dataId, group, Some(tenant)))
+    case Array(dataId, group)         => Some(ConfigId(dataId, group, None))
+    case _                            => None
+  }
+
+  private def idToString(configId: ConfigId): String = {
     val contentMD5 = cache.get(configId).map(_.md5).getOrElse(ConfigContent.EMPTY_MD5)
     val init       = s"${configId.dataId}${Constants.WORD_SEPARATOR}${configId.group}${Constants.WORD_SEPARATOR}$contentMD5"
     configId.namespace.foldLeft(init)((str, ns) => s"$str${Constants.WORD_SEPARATOR}$ns")
   }
 
-  def getConfig(dataId: String, group: String, timeoutMs: Int = Constants.TIMEOUT_MS): String = {
-    val params   = wrapParams(dataId, group)
+  def getConfig(configId: ConfigId, timeoutMs: Int = Constants.TIMEOUT_MS): Try[String] = Try {
+    val params   = configId.toParams
     val request  = agent.request(ApiConstants.CONFIG_CONTROLLER_PATH, params).copy(readTimeout = timeoutMs)
     val response = agent.get(request)
     if (response.is2xx) {
       val content = response.text
-      updateCache(ConfigId(dataId, group, setting.namespace), ConfigContent(content))
+      updateCache(configId, ConfigContent(content))
       content
     } else {
       throw NacosException(response.statusCode, response.statusMessage)
