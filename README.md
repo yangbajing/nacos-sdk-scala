@@ -1,7 +1,23 @@
 # nacos-sdk-scala
 
-- [nacos-client-scala](nacos-client-scala]
-- [nacos-akka](nacos-akka)
+支持 Scala 2.12, 2.13
+
+```sbt
+// Scala API
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.0.0"
+
+// Akka Discovery
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.0.0"
+
+// Play WS
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.0.0"
+```
+
+需要添加以下源：
+
+```sbt
+resolvers += Resolver.bintrayRepo("helloscala", "maven")
+```
 
 ## 阅读文档
 

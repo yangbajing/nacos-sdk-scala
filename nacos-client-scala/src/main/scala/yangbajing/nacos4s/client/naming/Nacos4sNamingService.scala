@@ -16,16 +16,35 @@
 
 package yangbajing.nacos4s.client.naming
 
+import java.io.IOException
+import java.util.Properties
+
+import com.alibaba.nacos.api.PropertyKeyConst
 import com.alibaba.nacos.api.naming.NamingService
 import com.alibaba.nacos.api.naming.listener.EventListener
 import com.alibaba.nacos.api.naming.pojo.{ Instance, ListView, ServiceInfo }
 import com.alibaba.nacos.api.selector.AbstractSelector
 import yangbajing.nacos4s.client.util.CollectionUtils._
+import yangbajing.nacos4s.client.util.NetworkUtils
 
 import scala.collection.immutable
 import scala.jdk.CollectionConverters._
 
-class Nacos4sNamingService(underlying: NamingService) {
+class Nacos4sNamingService(underlying: NamingService, props: Properties) {
+  if ("true" == props.getProperty("autoRegisterInstance")) {
+    val inst = new Instance
+    inst.setIp(
+      Option(props.getProperty("ip"))
+        .orElse(NetworkUtils.firstOnlineInet4Address().map(_.getHostAddress))
+        .getOrElse(throw new IOException("The local binding ip address could not be found.")))
+    inst.setPort(props.getProperty("port").toInt)
+    Option(props.getProperty(PropertyKeyConst.CLUSTER_NAME)).foreach(inst.setClusterName)
+    registerInstance(
+      props.getProperty("serviceName"),
+      Option(props.getProperty("group")).getOrElse("DEFAULT_GROUP"),
+      inst)
+  }
+
   def registerInstance(serviceName: String, ip: String, port: Int): Unit =
     underlying.registerInstance(serviceName, ip, port)
 

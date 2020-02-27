@@ -38,7 +38,7 @@ object ConfigUtils {
           case ConfigValueType.OBJECT =>
             make(props, propKey, value.asInstanceOf[ConfigObject])
           case _ =>
-            props.put(propKey, value.unwrapped())
+            props.put(propKey, value.unwrapped().toString)
         }
       }
 
