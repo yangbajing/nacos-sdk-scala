@@ -148,7 +148,7 @@ yangbajing/nacos-sdk-scala
 <ul>
   <li><a href="play-ws.html#play-ws" class="header">Play WS</a>
   <ul>
-    <li><a href="play-ws.html#使用" class="header">使用</a></li>
+    <li><a href="play-ws.html#依赖" class="header">依赖</a></li>
     <li><a href="play-ws.html#使用" class="header">使用</a></li>
   </ul></li>
 </ul>
@@ -158,7 +158,7 @@ yangbajing/nacos-sdk-scala
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> 1.0.1
+<i class="md-icon" title="Version">label_outline</i> 1.2.0
 </label>
 </li>
 </ul>
@@ -173,7 +173,7 @@ yangbajing/nacos-sdk-scala
 <ul>
   <li><a href="play-ws.html#play-ws" class="header">Play WS</a>
   <ul>
-    <li><a href="play-ws.html#使用" class="header">使用</a></li>
+    <li><a href="play-ws.html#依赖" class="header">依赖</a></li>
     <li><a href="play-ws.html#使用" class="header">使用</a></li>
   </ul></li>
 </ul>
@@ -186,16 +186,17 @@ yangbajing/nacos-sdk-scala
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#play-ws" name="play-ws" class="anchor"><span class="anchor-link"></span></a>Play WS</h1>
-<h2><a href="#使用" name="使用" class="anchor"><span class="anchor-link"></span></a>使用</h2>
-<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.0.1"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+<h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
+<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.2.0"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
   &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
   &lt;artifactId&gt;nacos-play-ws_2.12&lt;/artifactId&gt;
-  &lt;version&gt;1.0.1&lt;/version&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
-  compile group: 'me.yangbajing.nacos4s', name: 'nacos-play-ws_2.12', version: '1.0.1'
+  compile group: 'me.yangbajing.nacos4s', name: 'nacos-play-ws_2.12', version: '1.2.0'
 }</code></pre></dd></dl>
 <h2><a href="#使用" name="使用" class="anchor"><span class="anchor-link"></span></a>使用</h2>
-<p><strong>Scala API</strong></p>
+<p>与原生的 play-ws 使用唯一的区别就是在 <strong>Inject</strong> 时添加 <code>@Named(&quot;nacos&quot;)</code> 注解。</p>
+<h3><a href="#scala-api" name="scala-api" class="anchor"><span class="anchor-link"></span></a>Scala API</h3>
 <pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import javax.inject.{ Inject, Named }
 import play.api.libs.ws.WSClient
 
@@ -204,7 +205,7 @@ class NacosWSClientController @Inject() (@Named(&quot;nacos&quot;) wsClient: WSC
     val req = wsClient.url(&quot;http://example-service/api/health&quot;)
   }
 }</code></pre>
-<p><strong>Java API</strong></p>
+<h3><a href="#java-api" name="java-api" class="anchor"><span class="anchor-link"></span></a>Java API</h3>
 <pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java#L20-L37" target="_blank" title="Go to snippet source"></a><code class="language-java">import play.libs.ws.WSClient;
 import play.libs.ws.WSRequest;
 
@@ -231,7 +232,7 @@ Edit this page
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-1.0.1
+1.2.0
 </span>
 </div>
 </article>

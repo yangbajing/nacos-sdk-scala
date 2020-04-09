@@ -6,13 +6,13 @@ Nacos 版本：1.2.1。
 
 ```sbt
 // Scala API
-libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.0.0"
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.2.0"
 
 // Akka Discovery
-libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.0.0"
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.2.0"
 
 // Play WS
-libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.0.0"
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.2.0"
 ```
 
 需要添加以下源：
