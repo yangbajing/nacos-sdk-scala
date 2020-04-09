@@ -1,6 +1,8 @@
 # nacos-sdk-scala
 
-支持 Scala 2.12, 2.13
+支持 Scala 2.12, 2.13。
+
+Nacos 版本：1.2.1。
 
 ```sbt
 // Scala API

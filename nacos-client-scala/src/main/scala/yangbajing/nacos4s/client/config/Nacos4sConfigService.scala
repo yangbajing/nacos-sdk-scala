@@ -19,7 +19,7 @@ package yangbajing.nacos4s.client.config
 import com.alibaba.nacos.api.config.ConfigService
 import com.alibaba.nacos.api.config.listener.Listener
 
-class Nacos4sConfigService(underlying: ConfigService) {
+class Nacos4sConfigService(val underlying: ConfigService) {
   def getConfig(dataId: String, group: String, timeoutMs: Long): String = underlying.getConfig(dataId, group, timeoutMs)
 
   def getConfigAndSignListener(dataId: String, group: String, timeoutMs: Long, listener: Listener): String =

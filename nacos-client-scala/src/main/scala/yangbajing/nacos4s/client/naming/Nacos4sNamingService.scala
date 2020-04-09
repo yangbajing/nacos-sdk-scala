@@ -30,7 +30,7 @@ import yangbajing.nacos4s.client.util.NetworkUtils
 import scala.collection.immutable
 import scala.jdk.CollectionConverters._
 
-class Nacos4sNamingService(underlying: NamingService, props: Properties) {
+class Nacos4sNamingService(val underlying: NamingService, val props: Properties) {
   if ("true" == props.getProperty("autoRegisterInstance")) {
     val inst = new Instance
     inst.setIp(

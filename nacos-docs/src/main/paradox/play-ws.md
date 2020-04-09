@@ -1,6 +1,6 @@
 # Play WS
 
-## 使用
+## 依赖
 
 要在项目中使用，请添加以下依赖：
 
@@ -12,10 +12,12 @@
 
 ## 使用
 
-**Scala API**
+与原生的 play-ws 使用唯一的区别就是在 **Inject** 时添加 `@Named("nacos")` 注解。
+
+### Scala API
 
 @@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala) { #NacosWSClientController }
 
-**Java API**
+### Java API
 
 @@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java) { #NacosWSClientController }
