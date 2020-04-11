@@ -16,7 +16,9 @@
 
 package yangbajing.nacos4s.play.ws.javadsl;
 
-import akka.stream.Materializer;
+import akka.actor.ActorSystem;
+import akka.actor.typed.javadsl.Adapter;
+import akka.stream.SystemMaterializer;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSRequest;
@@ -27,22 +29,23 @@ import yangbajing.nacos4s.client.naming.Nacos4sNamingService;
 import yangbajing.nacos4s.client.util.Constants;
 import yangbajing.nacos4s.client.util.Nacos4s;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class NacosWSClient implements WSClient {
     private final StandaloneAhcWSClient client;
-    private final Materializer materializer;
+    private final ActorSystem system;
     private final Nacos4sNamingService namingService;
 
-    public NacosWSClient(StandaloneAhcWSClient client, Materializer materializer) {
+    public NacosWSClient(ActorSystem system, StandaloneAhcWSClient client) {
         this.client = client;
-        this.materializer = materializer;
-        namingService = Nacos4s.namingService(materializer.system().settings().config().getConfig(Constants.NACOS4S_CLIENT_NAMING()));
+        this.system = system;
+        namingService = Nacos4s.namingService(system.settings().config().getConfig(Constants.NACOS4S_CLIENT_NAMING()));
+    }
+
+    public NacosWSClient(akka.actor.typed.ActorSystem<?> system, StandaloneAhcWSClient client) {
+        this(Adapter.toClassic(system), client);
     }
 
     @Override
@@ -52,8 +55,8 @@ public class NacosWSClient implements WSClient {
 
     @Override
     public play.api.libs.ws.WSClient asScala() {
-        return new yangbajing.nacos4s.play.ws.scaladsl.NacosWSClient(new play.api.libs.ws.ahc.StandaloneAhcWSClient(
-                (AsyncHttpClient) client.getUnderlying(), materializer), materializer.system());
+        return new yangbajing.nacos4s.play.ws.scaladsl.NacosWSClient(system, new play.api.libs.ws.ahc.StandaloneAhcWSClient(
+                (AsyncHttpClient) client.getUnderlying(), SystemMaterializer.get(system).materializer()));
     }
 
     @Override
@@ -73,8 +76,10 @@ public class NacosWSClient implements WSClient {
                         uri.getQuery(),
                         uri.getFragment()).toString();
             }
-        } catch (URISyntaxException e) {
-            materializer.system().log().warning("URL invalid, url is {}.", url);
+        } catch (@SuppressWarnings("unused") URISyntaxException e) {
+            system.log().warning("URL invalid, url is {}.", url);
+        } catch (Exception e) {
+            system.log().warning("Service discovery failed, direct access. url is {}.", url, e);
         }
         final StandaloneAhcWSRequest plainWSRequest = client.url(realUrl);
         return new AhcWSRequest(this, plainWSRequest);

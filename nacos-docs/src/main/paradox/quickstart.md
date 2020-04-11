@@ -1,6 +1,6 @@
 # Quick Start
 
-适用于普通的 Scala 程序使用。
+Nacos SDK for Scala 基于 Java 客户端 [`nacos-client`](https://nacos.io/zh-cn/docs/sdk.html) 做了封装，使得在 Scala 下更易使用。支持使用 HOCON 做为配置文件，支持 Akka Discovery 和 Play-WS。
 
 ## 依赖
 

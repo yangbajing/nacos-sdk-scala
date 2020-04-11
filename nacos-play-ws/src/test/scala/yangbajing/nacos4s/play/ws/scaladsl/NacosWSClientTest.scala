@@ -16,19 +16,19 @@
 
 package yangbajing.nacos4s.play.ws.scaladsl
 
-import akka.actor.ActorSystem
-import javax.inject.{ Inject, Provider, Singleton }
-import play.api.inject.{ SimpleModule, bind }
-import play.api.libs.ws.WSClient
+import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
-class Nacos4sWSModule
-    extends SimpleModule(
-      bind[NacosWSClient].toProvider[NacosWSClientProvider],
-      bind[WSClient].qualifiedWith("nacos").to[NacosWSClient])
-
-@Singleton
-class NacosWSClientProvider @Inject() (underlyingClient: StandaloneAhcWSClient, system: ActorSystem)
-    extends Provider[NacosWSClient] {
-  override lazy val get: NacosWSClient = NacosWSClient(system, underlyingClient)
+class NacosWSClientTest extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+  "NacosWSClient" should {
+    "WSClient" in {
+      // #NacosWSClientTest
+      val wsClient = NacosWSClient(StandaloneAhcWSClient())
+      val response = wsClient.url("https://github.com/yangbajing/nacos-sdk-scala").get().futureValue
+      response.status shouldBe 200
+      wsClient.close()
+      // #NacosWSClientTest
+    }
+  }
 }

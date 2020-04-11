@@ -16,15 +16,14 @@
 
 package yangbajing.nacos4s.play.ws.scaladsl
 
-import java.net.URI
+import java.net.{ URI, URISyntaxException }
 
 import akka.actor.ActorSystem
-import javax.inject.{ Inject, Named, Singleton }
 import play.api.libs.ws.ahc.{ AhcWSRequest, StandaloneAhcWSClient, StandaloneAhcWSRequest }
 import play.api.libs.ws.{ WSClient, WSRequest }
 import yangbajing.nacos4s.client.util.{ Constants, Nacos4s }
 
-class NacosWSClient(underlyingClient: StandaloneAhcWSClient)(implicit system: ActorSystem) extends WSClient {
+class NacosWSClient private[nacos4s] (system: ActorSystem, underlyingClient: StandaloneAhcWSClient) extends WSClient {
   private val namingService = Nacos4s.namingService(system.settings.config.getConfig(Constants.NACOS4S_CLIENT_NAMING))
 
   override def underlying[T]: T = underlyingClient.underlying[T]
@@ -37,6 +36,9 @@ class NacosWSClient(underlyingClient: StandaloneAhcWSClient)(implicit system: Ac
         new URI(uri.getScheme, uri.getUserInfo, inst.getIp, inst.getPort, uri.getPath, uri.getQuery, uri.getFragment).toString
       } else url
     } catch {
+      case _: URISyntaxException =>
+        system.log.warning("URL invalid, url is {}.", url)
+        url
       case e: Exception =>
         system.log.warning("Service discovery failed, direct access. url is {}.", url, e)
         url
@@ -45,4 +47,17 @@ class NacosWSClient(underlyingClient: StandaloneAhcWSClient)(implicit system: Ac
   }
 
   override def close(): Unit = underlyingClient.close()
+}
+
+object NacosWSClient {
+  def apply(system: ActorSystem, underlyingClient: StandaloneAhcWSClient): NacosWSClient =
+    new NacosWSClient(system, underlyingClient)
+
+  def apply(system: akka.actor.typed.ActorSystem[Nothing], underlyingClient: StandaloneAhcWSClient): NacosWSClient = {
+    import akka.actor.typed.scaladsl.adapter._
+    apply(system.toClassic, underlyingClient)
+  }
+
+  def apply(underlyingClient: StandaloneAhcWSClient)(
+      implicit system: akka.actor.typed.ActorSystem[Nothing]): NacosWSClient = apply(system, underlyingClient)
 }

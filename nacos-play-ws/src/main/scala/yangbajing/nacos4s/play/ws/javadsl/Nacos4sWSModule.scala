@@ -16,7 +16,7 @@
 
 package yangbajing.nacos4s.play.ws.javadsl
 
-import akka.stream.Materializer
+import akka.actor.ActorSystem
 import javax.inject.{ Inject, Provider, Singleton }
 import play.api.inject.{ SimpleModule, bind }
 import play.libs.ws.WSClient
@@ -28,7 +28,7 @@ class Nacos4sWSModule
       bind[WSClient].qualifiedWith("nacos").to[NacosWSClient])
 
 @Singleton
-class NacosWSClientProvider @Inject() (underlyingClient: StandaloneAhcWSClient, mat: Materializer)
+class NacosWSClientProvider @Inject() (system: ActorSystem, underlyingClient: StandaloneAhcWSClient)
     extends Provider[NacosWSClient] {
-  override lazy val get: NacosWSClient = new NacosWSClient(underlyingClient, mat)
+  override lazy val get: NacosWSClient = new NacosWSClient(system, underlyingClient)
 }

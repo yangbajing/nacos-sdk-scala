@@ -41,13 +41,16 @@ lazy val nacosDocs = _project("nacos-docs")
 
 lazy val nacosPlayWs = _project("nacos-play-ws")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
-  .settings(libraryDependencies ++= Seq("com.typesafe.play" %% "play-ahc-ws" % versionPlay))
+  .settings(libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-stream" % versionAkka,
+      "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
+      "com.typesafe.play" %% "play-ahc-ws" % versionPlay))
 
 lazy val nacosAkka = _project("nacos-akka")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
   .settings(
     libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka,
+        "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
         "com.typesafe.akka" %% "akka-discovery" % versionAkka))
 
 lazy val nacosClientScala = _project("nacos-client-scala").settings(
