@@ -150,6 +150,7 @@ yangbajing/nacos-sdk-scala
   <ul>
     <li><a href="akka-discovery.html#依赖" class="header">依赖</a></li>
     <li><a href="akka-discovery.html#配置" class="header">配置</a></li>
+    <li><a href="akka-discovery.html#示例" class="header">示例</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -175,6 +176,7 @@ yangbajing/nacos-sdk-scala
   <ul>
     <li><a href="akka-discovery.html#依赖" class="header">依赖</a></li>
     <li><a href="akka-discovery.html#配置" class="header">配置</a></li>
+    <li><a href="akka-discovery.html#示例" class="header">示例</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -186,6 +188,7 @@ yangbajing/nacos-sdk-scala
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#akka-discovery" name="akka-discovery" class="anchor"><span class="anchor-link"></span></a>Akka Discovery</h1>
+<p>适用于基于 Akka 的程序使用。</p>
 <h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
 <p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.2.0"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
   &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
@@ -212,6 +215,37 @@ yangbajing/nacos-sdk-scala
   }
 }</code></pre>
 <p><code>nacos4s.client.naming</code> 配置见： <a href="quickstart.html#hocon-完整配置">nacos4s.client.naming</a></p>
+<h2><a href="#示例" name="示例" class="anchor"><span class="anchor-link"></span></a>示例</h2>
+<p>更多使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-akka/src/test/scala/yangbajing/nacos4s/akka/NacosServiceDiscoveryTest.scala">测试</a></p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-akka/src/test/scala/yangbajing/nacos4s/akka/NacosServiceDiscoveryTest.scala#L25-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class NacosServiceDiscoveryTest extends ScalaTestWithActorTestKit(&quot;&quot;&quot;
+akka.actor.testkit.typed {
+  default-timeout = 10.seconds
+}
+akka.discovery {
+  method = nacos
+  nacos {
+    onlyHealth = true
+    oneHealth = true
+  }
+}
+nacos4s.client.naming {
+  serverAddr = &quot;127.0.0.1:8848&quot;
+  namespace = &quot;&quot;
+  autoRegisterInstance = true
+  serviceName = &quot;me-auto-register&quot;
+  port = 9999
+}&quot;&quot;&quot;.stripMargin) with AnyWordSpecLike {
+  &quot;NacosServiceDiscovery&quot; should {
+    &quot;lookup&quot; in {
+      val resolved = Discovery(system).discovery.lookup(&quot;me-auto-register&quot;, 10.seconds).futureValue
+      println(resolved)
+      resolved.serviceName shouldBe &quot;me-auto-register&quot;
+      resolved.addresses should not be empty
+      val address = resolved.addresses.head
+      address.port shouldBe Some(9999)
+    }
+  }
+}</code></pre>
 </div>
 <div>
 <a href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/paradox/akka-discovery.md" title="Edit this page" class="md-source-file md-edit">

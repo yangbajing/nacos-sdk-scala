@@ -25,20 +25,24 @@ import com.alibaba.nacos.api.naming.listener.EventListener
 import com.alibaba.nacos.api.naming.pojo.{ Instance, ListView, ServiceInfo }
 import com.alibaba.nacos.api.selector.AbstractSelector
 import yangbajing.nacos4s.client.util.CollectionUtils._
+import yangbajing.nacos4s.client.util.ConfigUtils.RichProperties
 import yangbajing.nacos4s.client.util.NetworkUtils
 
 import scala.collection.immutable
 import scala.jdk.CollectionConverters._
 
 class Nacos4sNamingService(val underlying: NamingService, val props: Properties) {
-  if ("true" == props.getProperty("autoRegisterInstance")) {
+  val autoRegisterInstance: Boolean = props.getBoolean("autoRegisterInstance").getOrElse(false)
+  if (autoRegisterInstance) {
     val inst = new Instance
     inst.setIp(
       Option(props.getProperty("ip"))
         .orElse(NetworkUtils.firstOnlineInet4Address().map(_.getHostAddress))
         .getOrElse(throw new IOException("The local binding ip address could not be found.")))
-    inst.setPort(props.getProperty("port").toInt)
-    Option(props.getProperty(PropertyKeyConst.CLUSTER_NAME)).foreach(inst.setClusterName)
+    inst.setPort(props.getInt("port").getOrElse(throw new IllegalArgumentException("Property 'port' must be set.")))
+    if (props.containsKey(PropertyKeyConst.CLUSTER_NAME)) {
+      inst.setClusterName(props.getProperty(PropertyKeyConst.CLUSTER_NAME))
+    }
     registerInstance(
       props.getProperty("serviceName"),
       Option(props.getProperty("group")).getOrElse("DEFAULT_GROUP"),

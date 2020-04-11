@@ -1,4 +1,4 @@
-val versionScala212 = "2.12.10"
+val versionScala212 = "2.12.11"
 val versionScala213 = "2.13.1"
 val versionAkka = "2.6.4"
 val versionNacos = "1.2.1"
@@ -45,7 +45,10 @@ lazy val nacosPlayWs = _project("nacos-play-ws")
 
 lazy val nacosAkka = _project("nacos-akka")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
-  .settings(libraryDependencies ++= Seq("com.typesafe.akka" %% "akka-discovery" % versionAkka))
+  .settings(
+    libraryDependencies ++= Seq(
+        "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka,
+        "com.typesafe.akka" %% "akka-discovery" % versionAkka))
 
 lazy val nacosClientScala = _project("nacos-client-scala").settings(
   libraryDependencies ++= Seq(

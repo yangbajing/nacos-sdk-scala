@@ -1,5 +1,7 @@
 # Quick Start
 
+适用于普通的 Scala 程序使用。
+
 ## 依赖
 
 要在项目中使用，请添加以下依赖：
@@ -48,3 +50,13 @@ val namingService = Nacos4s.namingService(ConfigFactory.load().getConfig("nacos4
 ## HOCON 完整配置
 
 @@snip [reference.conf](../../../../nacos-client-scala/src/main/resources/reference.conf)
+
+## 示例
+
+更多 **Nacos4sConfigService** 使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) ：
+
+@@snip [Nacos4sConfigServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) { #ConfigService }
+
+更多 **Nacos4sNamingService** 使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) ：
+
+@@snip [Nacos4sNamingServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) { #NamingService }

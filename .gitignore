@@ -102,4 +102,6 @@ logs/
 *.bak
 !/sbt-dist/bin/
 
+standalone-logs/
 node_modules/
+

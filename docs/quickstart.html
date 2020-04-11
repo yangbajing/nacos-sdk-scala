@@ -153,6 +153,7 @@ yangbajing/nacos-sdk-scala
     <li><a href="quickstart.html#hocon-配置" class="header">HOCON 配置</a></li>
     <li><a href="quickstart.html#服务自动注册" class="header">服务自动注册</a></li>
     <li><a href="quickstart.html#hocon-完整配置" class="header">HOCON 完整配置</a></li>
+    <li><a href="quickstart.html#示例" class="header">示例</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -181,6 +182,7 @@ yangbajing/nacos-sdk-scala
     <li><a href="quickstart.html#hocon-配置" class="header">HOCON 配置</a></li>
     <li><a href="quickstart.html#服务自动注册" class="header">服务自动注册</a></li>
     <li><a href="quickstart.html#hocon-完整配置" class="header">HOCON 完整配置</a></li>
+    <li><a href="quickstart.html#示例" class="header">示例</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -192,6 +194,7 @@ yangbajing/nacos-sdk-scala
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#quick-start" name="quick-start" class="anchor"><span class="anchor-link"></span></a>Quick Start</h1>
+<p>适用于普通的 Scala 程序使用。</p>
 <h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
 <p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.2.0"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
   &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
@@ -271,6 +274,92 @@ val namingService = Nacos4s.namingService(ConfigFactory.load().getConfig(&quot;n
 
   // 注册服务端口
   port = 8080
+}</code></pre>
+<h2><a href="#示例" name="示例" class="anchor"><span class="anchor-link"></span></a>示例</h2>
+<p>更多 <strong>Nacos4sConfigService</strong> 使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala">测试</a> ：</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala#L29-L75" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val configService = Nacos4s.configService(ConfigFactory.parseString(&quot;&quot;&quot;{
+    |  serverAddr = &quot;127.0.0.1:8848&quot;
+    |  namespace = &quot;&quot;
+    |}&quot;&quot;&quot;.stripMargin))
+private val dataId = &quot;me.yangbajing.nacos4s&quot;
+private val group = &quot;DEFAULT_GROUP&quot;
+private val timeoutMs = 30000
+
+&quot;ConfigService&quot; should {
+  val listener = new AbstractListener {
+    override def receiveConfigInfo(configInfo: String): Unit = {
+      println(s&quot;[${OffsetDateTime.now()}] Received new config is:\n$configInfo&quot;)
+    }
+  }
+  &quot;getServerStatus&quot; in {
+    configService.getServerStatus shouldBe &quot;UP&quot;
+  }
+
+  &quot;addListener&quot; in {
+    configService.addListener(dataId, group, listener)
+  }
+
+  &quot;publishConfig&quot; in {
+    val content = &quot;&quot;&quot;nacos4s.client {
+                    |  serverAddr = &quot;127.0.0.1:8848&quot;
+                    |  namespace = &quot;&quot;
+                    |  serviceName = &quot;me.yangbajing.nacos4s&quot;
+                    |}&quot;&quot;&quot;.stripMargin
+    configService.publishConfig(dataId, group, content) shouldBe true
+    TimeUnit.SECONDS.sleep(1)
+  }
+
+  &quot;getConfig&quot; in {
+    val content = configService.getConfig(dataId, group, timeoutMs)
+    content should include(&quot;&quot;&quot;serverAddr = &quot;127.0.0.1:8848&quot;&quot;&quot;&quot;)
+  }
+
+  &quot;removeConfig&quot; in {
+    TimeUnit.SECONDS.sleep(1)
+    configService.removeConfig(dataId, group) shouldBe true
+  }
+
+  &quot;removeListener&quot; in {
+    TimeUnit.SECONDS.sleep(1)
+    configService.removeListener(dataId, group, listener)
+  }
+}</code></pre>
+<p>更多 <strong>Nacos4sNamingService</strong> 使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala">测试</a> ：</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala#L27-L62" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val namingService = Nacos4s.namingService(ConfigFactory.parseString(s&quot;&quot;&quot;{
+  |  serverAddr = &quot;127.0.0.1:8848&quot;
+  |  namespace = &quot;&quot;
+  |  autoRegisterInstance = true
+  |  serviceName = &quot;me-auto-register&quot;
+  |  port = 9999
+  |}&quot;&quot;&quot;.stripMargin))
+private val serviceName = &quot;me.yangbajing.nacos4s&quot;
+private val group = &quot;DEFAULT_GROUP&quot;
+private val ip = &quot;127.0.0.1&quot;
+private val port = 8888
+
+&quot;Nacos4sNamingService&quot; should {
+  &quot;getServerStatus&quot; in {
+    namingService.getServerStatus shouldBe &quot;UP&quot;
+    TimeUnit.SECONDS.sleep(1)
+  }
+
+  &quot;getAllInstances&quot; in {
+    val insts = namingService.getAllInstances(&quot;me-auto-register&quot;)
+    insts.foreach(println)
+    insts should have length 1
+  }
+
+  &quot;registerInstance&quot; in {
+    namingService.registerInstance(serviceName, group, ip, port)
+    TimeUnit.SECONDS.sleep(1)
+    val inst = namingService.selectOneHealthyInstance(serviceName)
+    inst should not be null
+    inst.isHealthy shouldBe true
+    inst.isEnabled shouldBe true
+    inst.isEphemeral shouldBe true
+    inst.getServiceName shouldBe s&quot;$group@@$serviceName&quot;
+    println(inst)
+  }
 }</code></pre>
 </div>
 <div>

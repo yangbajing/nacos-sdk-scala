@@ -22,4 +22,5 @@ object Constants {
   val ONLY_HEALTH = "onlyHealth"
   val NACOS4S = "nacos4s"
   val NAMING_CONFIG = "namingConfig"
+  val TIMEOUT_MS = "timeoutMs"
 }

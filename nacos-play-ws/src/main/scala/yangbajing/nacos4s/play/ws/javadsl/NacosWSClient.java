@@ -29,17 +29,16 @@ import yangbajing.nacos4s.client.util.Nacos4s;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Named("nacos")
 public class NacosWSClient implements WSClient {
     private final StandaloneAhcWSClient client;
     private final Materializer materializer;
     private final Nacos4sNamingService namingService;
 
-    @Inject
     public NacosWSClient(StandaloneAhcWSClient client, Materializer materializer) {
         this.client = client;
         this.materializer = materializer;

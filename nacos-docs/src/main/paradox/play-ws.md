@@ -10,6 +10,10 @@
   version="$version$"
 }
 
+并在 `application.conf` 配置文件中启用 `NacosWSModule` 模块。 *否则，你需要手动创建 `NacosWSClient` 实例。*
+
+@@snip [reference.conf](../../../../nacos-play-ws/src/main/resources/reference.conf)
+
 ## 使用
 
 与原生的 play-ws 使用唯一的区别就是在 **Inject** 时添加 `@Named("nacos")` 注解。

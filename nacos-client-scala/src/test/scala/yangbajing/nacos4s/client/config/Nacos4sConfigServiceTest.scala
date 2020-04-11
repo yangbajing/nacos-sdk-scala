@@ -25,6 +25,7 @@ import yangbajing.nacos4s.FusionWordSpecLike
 import yangbajing.nacos4s.client.util.Nacos4s
 
 class Nacos4sConfigServiceTest extends FusionWordSpecLike {
+  // #ConfigService
   private val configService = Nacos4s.configService(ConfigFactory.parseString("""{
       |  serverAddr = "127.0.0.1:8848"
       |  namespace = ""
@@ -72,4 +73,5 @@ class Nacos4sConfigServiceTest extends FusionWordSpecLike {
       configService.removeListener(dataId, group, listener)
     }
   }
+  // #ConfigService
 }

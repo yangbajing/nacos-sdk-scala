@@ -194,6 +194,11 @@ yangbajing/nacos-sdk-scala
 &lt;/dependency&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
   compile group: 'me.yangbajing.nacos4s', name: 'nacos-play-ws_2.12', version: '1.2.0'
 }</code></pre></dd></dl>
+<p>并在 <code>application.conf</code> 配置文件中启用 <code>NacosWSModule</code> 模块。 <em>否则，你需要手动创建 <code>NacosWSClient</code> 实例。</em></p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-play-ws/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">play.modules {
+  enabled += &quot;yangbajing.nacos4s.play.ws.scaladsl.Nacos4sWSModule&quot;
+  enabled += &quot;yangbajing.nacos4s.play.ws.javadsl.Nacos4sWSModule&quot;
+}</code></pre>
 <h2><a href="#使用" name="使用" class="anchor"><span class="anchor-link"></span></a>使用</h2>
 <p>与原生的 play-ws 使用唯一的区别就是在 <strong>Inject</strong> 时添加 <code>@Named(&quot;nacos&quot;)</code> 注解。</p>
 <h3><a href="#scala-api" name="scala-api" class="anchor"><span class="anchor-link"></span></a>Scala API</h3>

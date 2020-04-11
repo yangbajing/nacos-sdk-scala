@@ -24,9 +24,7 @@ import play.api.libs.ws.ahc.{ AhcWSRequest, StandaloneAhcWSClient, StandaloneAhc
 import play.api.libs.ws.{ WSClient, WSRequest }
 import yangbajing.nacos4s.client.util.{ Constants, Nacos4s }
 
-@Named("nacos")
-@Singleton
-class NacosWSClient @Inject() (underlyingClient: StandaloneAhcWSClient)(implicit system: ActorSystem) extends WSClient {
+class NacosWSClient(underlyingClient: StandaloneAhcWSClient)(implicit system: ActorSystem) extends WSClient {
   private val namingService = Nacos4s.namingService(system.settings.config.getConfig(Constants.NACOS4S_CLIENT_NAMING))
 
   override def underlying[T]: T = underlyingClient.underlying[T]
