@@ -33,8 +33,6 @@ Scala 开发并和 Java/Spring 的服务相互配合。
 使用 Spring。Spring 与 Scala 服务之间通过 gRPC 相互调用，文件服务因需要向公网提供接口，使用 Akka HTTP 提供了 RESTful 服务
 （有兴趣的读者可以参阅作者翻译的 Akka HTTP 中文文档：[https://www.yangbajing.me/akka-http/](https://www.yangbajing.me/akka-http/)）。
 
-在微服务改造实践期间，总结并提炼出了此 [Nacos SDK for Scala](https://github.com/yangbajing/nacos-sdk-scala) 并贡献给社区。
-
 ## 关于作者
 
 作者是一个 Java/Scala 程序员，在日常工作中大量使用 Scala/Akka。
