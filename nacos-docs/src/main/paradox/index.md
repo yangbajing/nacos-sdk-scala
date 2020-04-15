@@ -4,6 +4,7 @@
 
 @@@ index
 
+* [introduction](introduction.md)
 * [quickstart](quickstart.md)
 * [akka](akka-discovery.md)
 * [play-ws](play-ws.md)
