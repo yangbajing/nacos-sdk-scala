@@ -1,3 +1,6 @@
+import com.typesafe.sbt.SbtGit.GitKeys
+import com.typesafe.sbt.git.DefaultReadableGit
+
 val versionScala212 = "2.12.11"
 val versionScala213 = "2.13.1"
 val versionAkka = "2.6.4"
@@ -13,12 +16,14 @@ ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
 
 ThisBuild / scalafmtOnCompile := true
 
+ThisBuild / version := "1.2.1"
+
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
   .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)
   .settings(skip in publish := true)
 
 lazy val nacosDocs = _project("nacos-docs")
-  .enablePlugins(ParadoxMaterialThemePlugin)
+  .enablePlugins(ParadoxMaterialThemePlugin, GhpagesPlugin)
   .dependsOn(nacosPlayWs, nacosAkka, nacosClientScala)
   .settings(skip in publish := true)
   .settings(
@@ -37,7 +42,11 @@ lazy val nacosDocs = _project("nacos-docs")
         "scala.version" -> scalaVersion.value,
         "scala.binary_version" -> scalaBinaryVersion.value,
         "scaladoc.akka.base_url" -> s"http://doc.akka.io/api/$versionAkka",
-        "akka.version" -> versionAkka))
+        "akka.version" -> versionAkka),
+    git.remoteRepo := "https://github.com/yangbajing/nacos-sdk-scala.git",
+    //ThisProject / GitKeys.gitReader := baseDirectory(base => new DefaultReadableGit(base)).value,
+    siteSourceDirectory := target.value / "paradox" / "site" / "main",
+    ghpagesNoJekyll := true)
 
 lazy val nacosPlayWs = _project("nacos-play-ws")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
