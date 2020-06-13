@@ -29,20 +29,28 @@ class NacosWSClient private[nacos4s] (system: ActorSystem, underlyingClient: Sta
   override def underlying[T]: T = underlyingClient.underlying[T]
 
   override def url(url: String): WSRequest = {
-    val realUrl = try {
-      val uri = new URI(url)
-      if (uri.getPort == -1) {
-        val inst = namingService.selectOneHealthyInstance(uri.getHost)
-        new URI(uri.getScheme, uri.getUserInfo, inst.getIp, inst.getPort, uri.getPath, uri.getQuery, uri.getFragment).toString
-      } else url
-    } catch {
-      case _: URISyntaxException =>
-        system.log.warning("URL invalid, url is {}.", url)
-        url
-      case e: Exception =>
-        system.log.warning("Service discovery failed, direct access. url is {}.", url, e)
-        url
-    }
+    val realUrl =
+      try {
+        val uri = new URI(url)
+        if (uri.getPort == -1) {
+          val inst = namingService.selectOneHealthyInstance(uri.getHost)
+          new URI(
+            uri.getScheme,
+            uri.getUserInfo,
+            inst.getIp,
+            inst.getPort,
+            uri.getPath,
+            uri.getQuery,
+            uri.getFragment).toString
+        } else url
+      } catch {
+        case _: URISyntaxException =>
+          system.log.warning("URL invalid, url is {}.", url)
+          url
+        case e: Exception =>
+          system.log.warning("Service discovery failed, direct access. url is {}.", url, e)
+          url
+      }
     AhcWSRequest(underlyingClient.url(realUrl).asInstanceOf[StandaloneAhcWSRequest])
   }
 
@@ -58,6 +66,6 @@ object NacosWSClient {
     apply(system.toClassic, underlyingClient)
   }
 
-  def apply(underlyingClient: StandaloneAhcWSClient)(
-      implicit system: akka.actor.typed.ActorSystem[Nothing]): NacosWSClient = apply(system, underlyingClient)
+  def apply(underlyingClient: StandaloneAhcWSClient)(implicit
+      system: akka.actor.typed.ActorSystem[Nothing]): NacosWSClient = apply(system, underlyingClient)
 }

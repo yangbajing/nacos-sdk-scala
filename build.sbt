@@ -2,13 +2,13 @@ import com.typesafe.sbt.SbtGit.GitKeys
 import com.typesafe.sbt.git.DefaultReadableGit
 
 val versionScala212 = "2.12.11"
-val versionScala213 = "2.13.1"
-val versionAkka = "2.6.4"
-val versionNacos = "1.2.1"
-val versionPlay = "2.8.1"
+val versionScala213 = "2.13.2"
+val versionAkka = "2.6.6"
+val versionNacos = "1.3.0"
+val versionPlay = "2.8.2"
 val versionConfig = "1.4.0"
-val versionScalaCollectionCompat = "2.1.4"
-val versionScalatest = "3.1.1"
+val versionScalaCollectionCompat = "2.1.6"
+val versionScalatest = "3.1.2"
 
 ThisBuild / scalaVersion := versionScala212
 
@@ -16,7 +16,7 @@ ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
 
 ThisBuild / scalafmtOnCompile := true
 
-ThisBuild / version := "1.2.1"
+ThisBuild / version := "1.3.0"
 
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
   .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)
@@ -51,7 +51,7 @@ lazy val nacosDocs = _project("nacos-docs")
 lazy val nacosPlayWs = _project("nacos-play-ws")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
   .settings(libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-stream" % versionAkka,
+      "com.typesafe.akka" %% "akka-stream-typed" % versionAkka,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
       "com.typesafe.play" %% "play-ahc-ws" % versionPlay))
 
