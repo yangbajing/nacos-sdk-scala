@@ -45,7 +45,7 @@ class Nacos4sNamingServiceTest extends FusionWordSpecLike {
     "getAllInstances" in {
       val insts = namingService.getAllInstances("me-auto-register")
       insts.foreach(println)
-      insts should have length 1
+      insts should have size 1
     }
 
     "registerInstance" in {

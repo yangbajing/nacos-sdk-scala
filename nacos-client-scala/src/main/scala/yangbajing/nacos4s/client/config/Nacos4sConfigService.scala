@@ -37,4 +37,6 @@ class Nacos4sConfigService(val underlying: ConfigService) {
     underlying.removeListener(dataId, group, listener)
 
   def getServerStatus: String = underlying.getServerStatus
+
+  def shutDown(): Unit = underlying.shutDown()
 }

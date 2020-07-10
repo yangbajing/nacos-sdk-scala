@@ -1,10 +1,8 @@
-import com.typesafe.sbt.SbtGit.GitKeys
-import com.typesafe.sbt.git.DefaultReadableGit
 
 val versionScala212 = "2.12.11"
-val versionScala213 = "2.13.2"
+val versionScala213 = "2.13.3"
 val versionAkka = "2.6.6"
-val versionNacos = "1.3.0"
+val versionNacos = "1.3.1-BETA.1"
 val versionPlay = "2.8.2"
 val versionConfig = "1.4.0"
 val versionScalaCollectionCompat = "2.1.6"
@@ -16,7 +14,7 @@ ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
 
 ThisBuild / scalafmtOnCompile := true
 
-ThisBuild / version := "1.3.0"
+ThisBuild / version := "1.3.1-beta1"
 
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
   .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)

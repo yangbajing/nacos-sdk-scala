@@ -28,7 +28,6 @@ import yangbajing.nacos4s.client.util.CollectionUtils._
 import yangbajing.nacos4s.client.util.ConfigUtils.RichProperties
 import yangbajing.nacos4s.client.util.NetworkUtils
 
-import scala.collection.immutable
 import scala.jdk.CollectionConverters._
 
 class Nacos4sNamingService(val underlying: NamingService, val props: Properties) {
@@ -85,65 +84,65 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
   def deregisterInstance(serviceName: String, groupName: String, instance: Instance): Unit =
     underlying.deregisterInstance(serviceName, groupName, instance)
 
-  def getAllInstances(serviceName: String): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String): Iterable[Instance] =
     underlying.getAllInstances(serviceName).asScala.toVector
 
-  def getAllInstances(serviceName: String, groupName: String): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, groupName: String): Iterable[Instance] =
     underlying.getAllInstances(serviceName, groupName).asScala.toVector
 
-  def getAllInstances(serviceName: String, subscribe: Boolean): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, subscribe: Boolean): Iterable[Instance] =
     underlying.getAllInstances(serviceName, subscribe).asScala.toVector
 
-  def getAllInstances(serviceName: String, groupName: String, subscribe: Boolean): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, groupName: String, subscribe: Boolean): Iterable[Instance] =
     underlying.getAllInstances(serviceName, groupName, subscribe).asScala.toVector
 
-  def getAllInstances(serviceName: String, clusters: Iterable[String]): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, clusters: Iterable[String]): Iterable[Instance] =
     underlying.getAllInstances(serviceName, clusters.asJavaList).asScala.toVector
 
-  def getAllInstances(serviceName: String, groupName: String, clusters: Iterable[String]): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, groupName: String, clusters: Iterable[String]): Iterable[Instance] =
     underlying.getAllInstances(serviceName, groupName, clusters.asJavaList).asScala.toVector
 
-  def getAllInstances(serviceName: String, clusters: Iterable[String], subscribe: Boolean): immutable.Seq[Instance] =
+  def getAllInstances(serviceName: String, clusters: Iterable[String], subscribe: Boolean): Iterable[Instance] =
     underlying.getAllInstances(serviceName, clusters.asJavaList, subscribe).asScala.toVector
 
   def getAllInstances(
       serviceName: String,
       groupName: String,
       clusters: Iterable[String],
-      subscribe: Boolean): immutable.Seq[Instance] =
+      subscribe: Boolean): Iterable[Instance] =
     underlying.getAllInstances(serviceName, groupName, clusters.asJavaList, subscribe).asScala.toVector
 
-  def selectInstances(serviceName: String, healthy: Boolean): immutable.Seq[Instance] =
+  def selectInstances(serviceName: String, healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, healthy).asScala.toVector
 
-  def selectInstances(serviceName: String, groupName: String, healthy: Boolean): immutable.Seq[Instance] =
+  def selectInstances(serviceName: String, groupName: String, healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, healthy).asScala.toVector
 
-  def selectInstances(serviceName: String, healthy: Boolean, subscribe: Boolean): immutable.Seq[Instance] =
+  def selectInstances(serviceName: String, healthy: Boolean, subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, healthy, subscribe).asScala.toVector
 
   def selectInstances(
       serviceName: String,
       groupName: String,
       healthy: Boolean,
-      subscribe: Boolean): immutable.Seq[Instance] =
+      subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, healthy, subscribe).asScala.toVector
 
-  def selectInstances(serviceName: String, clusters: Iterable[String], healthy: Boolean): immutable.Seq[Instance] =
+  def selectInstances(serviceName: String, clusters: Iterable[String], healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, clusters.asJavaList, healthy).asScala.toVector
 
   def selectInstances(
       serviceName: String,
       groupName: String,
       clusters: Iterable[String],
-      healthy: Boolean): immutable.Seq[Instance] =
+      healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, clusters.asJavaList, healthy).asScala.toVector
 
   def selectInstances(
       serviceName: String,
       clusters: Iterable[String],
       healthy: Boolean,
-      subscribe: Boolean): immutable.Seq[Instance] =
+      subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, clusters.asJavaList, healthy, subscribe).asScala.toVector
 
   def selectInstances(
@@ -151,7 +150,7 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
       groupName: String,
       clusters: Iterable[String],
       healthy: Boolean,
-      subscribe: Boolean): immutable.Seq[Instance] =
+      subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, clusters.asJavaList, healthy, subscribe).asScala.toVector
 
   def selectOneHealthyInstance(serviceName: String): Instance = underlying.selectOneHealthyInstance(serviceName)
@@ -165,10 +164,10 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
   def selectOneHealthyInstance(serviceName: String, groupName: String, subscribe: Boolean): Instance =
     underlying.selectOneHealthyInstance(serviceName, groupName, subscribe)
 
-  def selectOneHealthyInstance(serviceName: String, clusters: immutable.Seq[String]): Instance =
+  def selectOneHealthyInstance(serviceName: String, clusters: Iterable[String]): Instance =
     underlying.selectOneHealthyInstance(serviceName, clusters.asJavaList)
 
-  def selectOneHealthyInstance(serviceName: String, groupName: String, clusters: immutable.Seq[String]): Instance =
+  def selectOneHealthyInstance(serviceName: String, groupName: String, clusters: Iterable[String]): Instance =
     underlying.selectOneHealthyInstance(serviceName, groupName, clusters.asJavaList)
 
   def selectOneHealthyInstance(serviceName: String, clusters: Iterable[String], subscribe: Boolean): Instance =
@@ -215,7 +214,9 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
   def getServicesOfServer(pageNo: Int, pageSize: Int, groupName: String, selector: AbstractSelector): ListView[String] =
     underlying.getServicesOfServer(pageNo, pageSize, groupName, selector)
 
-  def getSubscribeServices: immutable.Seq[ServiceInfo] = underlying.getSubscribeServices.asScala.toVector
+  def getSubscribeServices: Iterable[ServiceInfo] = underlying.getSubscribeServices.asScala.toVector
 
   def getServerStatus: String = underlying.getServerStatus
+
+  def shutDown(): Unit = underlying.shutDown()
 }
