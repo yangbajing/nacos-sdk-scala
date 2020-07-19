@@ -17,10 +17,16 @@
 package yangbajing.nacos4s.play.ws.scaladsl
 
 import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.scalatest.time.Span
 import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.ws.ahc.StandaloneAhcWSClient
 
-class NacosWSClientTest extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+class NacosWSClientTest
+    extends ScalaTestWithActorTestKit("akka.actor.testkit.typed.default-timeout = 60.seconds")
+    with AnyWordSpecLike {
+  implicit override val patience: PatienceConfig =
+    PatienceConfig(testKit.testKitSettings.DefaultTimeout.duration, Span(100, org.scalatest.time.Millis))
+
   "NacosWSClient" should {
     "WSClient" in {
       // #NacosWSClientTest

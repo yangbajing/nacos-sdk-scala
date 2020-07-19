@@ -1,8 +1,7 @@
-
-val versionScala212 = "2.12.11"
+val versionScala212 = "2.12.12"
 val versionScala213 = "2.13.3"
-val versionAkka = "2.6.6"
-val versionNacos = "1.3.1-BETA.1"
+val versionAkka = "2.6.8"
+val versionNacos = "1.3.1"
 val versionPlay = "2.8.2"
 val versionConfig = "1.4.0"
 val versionScalaCollectionCompat = "2.1.6"
@@ -14,7 +13,7 @@ ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
 
 ThisBuild / scalafmtOnCompile := true
 
-ThisBuild / version := "1.3.1-beta1"
+ThisBuild / version := "1.3.1"
 
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
   .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)
@@ -51,7 +50,7 @@ lazy val nacosPlayWs = _project("nacos-play-ws")
   .settings(libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-stream-typed" % versionAkka,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
-      "com.typesafe.play" %% "play-ahc-ws" % versionPlay))
+      ("com.typesafe.play" %% "play-ahc-ws" % versionPlay).excludeAll(ExclusionRule("com.typesafe.akka"))))
 
 lazy val nacosAkka = _project("nacos-akka")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
@@ -85,7 +84,8 @@ def basicSettings =
     startYear := Some(2020),
     licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
     headerLicense := Some(HeaderLicense.ALv2("2020", "me.yangbajing")),
-    scalacOptions ++= Seq(
+    scalacOptions ++= {
+      val list = Seq(
         "-encoding",
         "UTF-8", // yes, this is 2 args
         "-feature",
@@ -94,8 +94,10 @@ def basicSettings =
         "-Xlint",
         "-opt:l:inline",
         "-opt-inline-from",
-        "-Ywarn-dead-code"),
-    javacOptions in Compile ++= Seq("-Xlint:unchecked", "-Xlint:deprecation"),
+        "-Ywarn-dead-code")
+      (if (scalaVersion.value.startsWith("2.12")) "-target:jvm-1.8" else "-target:8") +: list
+    },
+    javacOptions in Compile ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
     javaOptions in run ++= Seq("-Xms128m", "-Xmx1024m", "-Djava.library.path=./target/native"),
     shellPrompt := { s =>
       Project.extract(s).currentProject.id + " > "
@@ -117,6 +119,7 @@ def basicSettings =
         val oldStrategy = (assemblyMergeStrategy in assembly).value
         oldStrategy(x)
     },
+    libraryDependencies ++= Seq("ch.qos.logback" % "logback-classic" % "1.2.3" % Test),
     fork in run := true,
     fork in Test := true,
     parallelExecution in Test := false)
