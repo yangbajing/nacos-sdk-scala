@@ -163,7 +163,7 @@ yangbajing/nacos-sdk-scala
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> 1.3.1-beta1
+<i class="md-icon" title="Version">label_outline</i> 1.3.1
 </label>
 </li>
 </ul>
@@ -197,19 +197,19 @@ yangbajing/nacos-sdk-scala
 <h1><a href="#quick-start" name="quick-start" class="anchor"><span class="anchor-link"></span></a>Quick Start</h1>
 <p>Nacos SDK for Scala 基于 Java 客户端 <a href="https://nacos.io/zh-cn/docs/sdk.html"><code>nacos-client</code></a> 做了封装，使得在 Scala 下更易使用。支持使用 <a href="https://github.com/lightbend/config">HOCON</a> 做为配置文件，支持 Akka Discovery 和 Play-WS。</p>
 <h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
-<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.3.1-beta1"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % "1.3.1"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
   &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
   &lt;artifactId&gt;nacos-client-scala_2.12&lt;/artifactId&gt;
-  &lt;version&gt;1.3.1-beta1&lt;/version&gt;
+  &lt;version&gt;1.3.1&lt;/version&gt;
 &lt;/dependency&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
-  compile group: 'me.yangbajing.nacos4s', name: 'nacos-client-scala_2.12', version: '1.3.1-beta1'
+  compile group: 'me.yangbajing.nacos4s', name: 'nacos-client-scala_2.12', version: '1.3.1'
 }</code></pre></dd></dl>
 <p>并添加以下依赖源：</p>
 <pre class="prettyprint"><code class="language-scala">resolvers += Resolver.bintrayRepo(&quot;helloscala&quot;, &quot;maven&quot;)
 </code></pre>
 <h2><a href="#编程使用" name="编程使用" class="anchor"><span class="anchor-link"></span></a>编程使用</h2>
 <h3><a href="#nacos4snamingservice" name="nacos4snamingservice" class="anchor"><span class="anchor-link"></span></a>Nacos4sNamingService</h3>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/naming/NamingDemo.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import yangbajing.nacos4s.client.naming.Nacos4sNamingService
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-docs/src/main/scala/docs/naming/NamingDemo.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import yangbajing.nacos4s.client.naming.Nacos4sNamingService
 import yangbajing.nacos4s.client.util.Nacos4s
 
 object NamingDemo extends App {
@@ -218,7 +218,7 @@ object NamingDemo extends App {
   assert(status == &quot;UP&quot;)
 }</code></pre>
 <h3><a href="#nacos4sconfigservice" name="nacos4sconfigservice" class="anchor"><span class="anchor-link"></span></a>Nacos4sConfigService</h3>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/config/ConfigDemo.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import yangbajing.nacos4s.client.config.Nacos4sConfigService
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-docs/src/main/scala/docs/config/ConfigDemo.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import yangbajing.nacos4s.client.config.Nacos4sConfigService
 import yangbajing.nacos4s.client.util.Nacos4s
 
 object ConfigDemo extends App {
@@ -229,7 +229,7 @@ object ConfigDemo extends App {
 <h2><a href="#hocon-配置" name="hocon-配置" class="anchor"><span class="anchor-link"></span></a>HOCON 配置</h2>
 <p>Nacos4s 支持使用 HOCON 作为配置文件。</p>
 <p><em><code>application.conf</code></em></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/resources/application.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">nacos4s.client {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-docs/src/main/resources/application.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">nacos4s.client {
   naming {
     serverAddr = &quot;127.0.0.1:8848&quot;
     namespace = &quot;&quot;
@@ -250,7 +250,7 @@ val namingService = Nacos4s.namingService(ConfigFactory.load().getConfig(&quot;n
 <h2><a href="#服务自动注册" name="服务自动注册" class="anchor"><span class="anchor-link"></span></a>服务自动注册</h2>
 <p>在使用 ConfigFactory 初始化 <code>Nacos4sNamingService</code> 时设置 <code>autoRegisterInstance = on</code> 可自动将服务注册到 Nacos。</p>
 <h2><a href="#hocon-完整配置" name="hocon-完整配置" class="anchor"><span class="anchor-link"></span></a>HOCON 完整配置</h2>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-client-scala/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">nacos4s.client.naming {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-client-scala/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">nacos4s.client.naming {
   // 是否自动注册服务到 Nacos
   autoRegisterInstance = false
 
@@ -278,7 +278,7 @@ val namingService = Nacos4s.namingService(ConfigFactory.load().getConfig(&quot;n
 }</code></pre>
 <h2><a href="#示例" name="示例" class="anchor"><span class="anchor-link"></span></a>示例</h2>
 <p>更多 <strong>Nacos4sConfigService</strong> 使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala">测试</a> ：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala#L29-L75" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val configService = Nacos4s.configService(ConfigFactory.parseString(&quot;&quot;&quot;{
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala#L29-L75" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val configService = Nacos4s.configService(ConfigFactory.parseString(&quot;&quot;&quot;{
     |  serverAddr = &quot;127.0.0.1:8848&quot;
     |  namespace = &quot;&quot;
     |}&quot;&quot;&quot;.stripMargin))
@@ -326,7 +326,7 @@ private val timeoutMs = 30000
   }
 }</code></pre>
 <p>更多 <strong>Nacos4sNamingService</strong> 使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala">测试</a> ：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala#L27-L62" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val namingService = Nacos4s.namingService(ConfigFactory.parseString(s&quot;&quot;&quot;{
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala#L27-L62" target="_blank" title="Go to snippet source"></a><code class="language-scala">private val namingService = Nacos4s.namingService(ConfigFactory.parseString(s&quot;&quot;&quot;{
   |  serverAddr = &quot;127.0.0.1:8848&quot;
   |  namespace = &quot;&quot;
   |  autoRegisterInstance = true
@@ -364,13 +364,13 @@ private val port = 8888
 }</code></pre>
 </div>
 <div>
-<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/paradox/quickstart.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-docs/src/main/paradox/quickstart.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-1.3.1-beta1
+1.3.1
 </span>
 </div>
 </article>
