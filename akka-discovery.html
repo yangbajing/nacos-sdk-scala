@@ -160,7 +160,7 @@ yangbajing/nacos-sdk-scala
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> 1.3.1
+<i class="md-icon" title="Version">label_outline</i> 1.3.2
 </label>
 </li>
 </ul>
@@ -191,16 +191,16 @@ yangbajing/nacos-sdk-scala
 <h1><a href="#akka-discovery" name="akka-discovery" class="anchor"><span class="anchor-link"></span></a>Akka Discovery</h1>
 <p>适用于基于 Akka 的程序使用。</p>
 <h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
-<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.3.1"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % "1.3.2"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
   &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
   &lt;artifactId&gt;nacos-akka_2.12&lt;/artifactId&gt;
-  &lt;version&gt;1.3.1&lt;/version&gt;
+  &lt;version&gt;1.3.2&lt;/version&gt;
 &lt;/dependency&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
-  compile group: 'me.yangbajing.nacos4s', name: 'nacos-akka_2.12', version: '1.3.1'
+  compile group: 'me.yangbajing.nacos4s', name: 'nacos-akka_2.12', version: '1.3.2'
 }</code></pre></dd></dl>
 <h2><a href="#配置" name="配置" class="anchor"><span class="anchor-link"></span></a>配置</h2>
 <p>配置 Akka Discovery 使用 <code>Nacos4sNamingService</code> </p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-akka/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">akka.discovery {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-akka/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">akka.discovery {
   method = nacos
   nacos {
     // 实现了ServiceDiscovery的服务发现类完整路径
@@ -218,7 +218,7 @@ yangbajing/nacos-sdk-scala
 <p><code>nacos4s.client.naming</code> 配置见： <a href="quickstart.html#hocon-完整配置">nacos4s.client.naming</a></p>
 <h2><a href="#示例" name="示例" class="anchor"><span class="anchor-link"></span></a>示例</h2>
 <p>更多使用示例见 <a href="https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-akka/src/test/scala/yangbajing/nacos4s/akka/NacosServiceDiscoveryTest.scala">测试</a></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-akka/src/test/scala/yangbajing/nacos4s/akka/NacosServiceDiscoveryTest.scala#L25-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class NacosServiceDiscoveryTest extends ScalaTestWithActorTestKit(&quot;&quot;&quot;
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-akka/src/test/scala/yangbajing/nacos4s/akka/NacosServiceDiscoveryTest.scala#L25-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class NacosServiceDiscoveryTest extends ScalaTestWithActorTestKit(&quot;&quot;&quot;
 akka.actor.testkit.typed {
   default-timeout = 10.seconds
 }
@@ -249,13 +249,13 @@ nacos4s.client.naming {
 }</code></pre>
 </div>
 <div>
-<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/v1.3.1/nacos-docs/src/main/paradox/akka-discovery.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/paradox/akka-discovery.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-1.3.1
+1.3.2
 </span>
 </div>
 </article>
