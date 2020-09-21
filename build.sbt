@@ -1,11 +1,11 @@
 val versionScala212 = "2.12.12"
 val versionScala213 = "2.13.3"
-val versionAkka = "2.6.8"
-val versionNacos = "1.3.1"
+val versionAkka = "2.6.9"
+val versionNacos = "1.3.2"
 val versionPlay = "2.8.2"
 val versionConfig = "1.4.0"
-val versionScalaCollectionCompat = "2.1.6"
-val versionScalatest = "3.1.2"
+val versionScalaCollectionCompat = "2.2.0"
+val versionScalatest = "3.2.2"
 
 ThisBuild / scalaVersion := versionScala212
 
@@ -13,7 +13,7 @@ ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
 
 ThisBuild / scalafmtOnCompile := true
 
-ThisBuild / version := "1.3.1"
+ThisBuild / version := "1.3.2"
 
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
   .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)

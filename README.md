@@ -3,6 +3,8 @@
 支持 Scala 2.12, 2.13。
 
 ```sbt
+resolvers += Resolver.jcenterRepo
+
 // Scala API
 libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % <version>
 
@@ -14,12 +16,6 @@ libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % <version>
 ```
 
 *`<version>` 修改为实际版本号，请见 [https://github.com/yangbajing/nacos-sdk-scala/releases](https://github.com/yangbajing/nacos-sdk-scala/releases) 。*
-
-需要添加以下源：
-
-```sbt
-resolvers += Resolver.bintrayRepo("helloscala", "maven")
-```
 
 ## 阅读文档
 
