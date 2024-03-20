@@ -16,21 +16,22 @@
 
 package yangbajing.nacos4s.client.naming
 
-import java.util.concurrent.TimeUnit
-
 import com.typesafe.config.ConfigFactory
 import yangbajing.nacos4s.FusionWordSpecLike
 import yangbajing.nacos4s.client.util.Nacos4s
 
+import java.util.concurrent.TimeUnit
+
 class Nacos4sNamingServiceTest extends FusionWordSpecLike {
   // #NamingService
-  private val namingService = Nacos4s.namingService(ConfigFactory.parseString(s"""{
-    |  serverAddr = "127.0.0.1:8848"
-    |  namespace = ""
-    |  autoRegisterInstance = true
-    |  serviceName = "me-auto-register"
-    |  port = 9999
-    |}""".stripMargin))
+  private val namingService = Nacos4s.namingService(ConfigFactory.parseString(
+    s"""{
+       |  serverAddr = "127.0.0.1:8848"
+       |  namespace = ""
+       |  autoRegisterInstance = true
+       |  serviceName = "me-auto-register"
+       |  port = 9999
+       |}""".stripMargin))
   private val serviceName = "me.yangbajing.nacos4s"
   private val group = "DEFAULT_GROUP"
   private val ip = "127.0.0.1"

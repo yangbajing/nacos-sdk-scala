@@ -16,12 +16,12 @@
 
 package yangbajing.nacos4s.play.ws.scaladsl
 
-import java.net.{ URI, URISyntaxException }
+import org.apache.pekko.actor.ActorSystem
+import play.api.libs.ws.ahc.{AhcWSRequest, StandaloneAhcWSClient, StandaloneAhcWSRequest}
+import play.api.libs.ws.{WSClient, WSRequest}
+import yangbajing.nacos4s.client.util.{Constants, Nacos4s}
 
-import akka.actor.ActorSystem
-import play.api.libs.ws.ahc.{ AhcWSRequest, StandaloneAhcWSClient, StandaloneAhcWSRequest }
-import play.api.libs.ws.{ WSClient, WSRequest }
-import yangbajing.nacos4s.client.util.{ Constants, Nacos4s }
+import java.net.{URI, URISyntaxException}
 
 class NacosWSClient private[nacos4s] (system: ActorSystem, underlyingClient: StandaloneAhcWSClient) extends WSClient {
   private val namingService = Nacos4s.namingService(system.settings.config.getConfig(Constants.NACOS4S_CLIENT_NAMING))
@@ -58,14 +58,15 @@ class NacosWSClient private[nacos4s] (system: ActorSystem, underlyingClient: Sta
 }
 
 object NacosWSClient {
-  def apply(system: ActorSystem, underlyingClient: StandaloneAhcWSClient): NacosWSClient =
-    new NacosWSClient(system, underlyingClient)
+  def apply(underlyingClient: StandaloneAhcWSClient)(implicit
+    system: org.apache.pekko.actor.typed.ActorSystem[Nothing]): NacosWSClient = apply(system, underlyingClient)
 
-  def apply(system: akka.actor.typed.ActorSystem[Nothing], underlyingClient: StandaloneAhcWSClient): NacosWSClient = {
-    import akka.actor.typed.scaladsl.adapter._
+  def apply(system: org.apache.pekko.actor.typed.ActorSystem[Nothing], underlyingClient: StandaloneAhcWSClient)
+    : NacosWSClient = {
+    import org.apache.pekko.actor.typed.scaladsl.adapter.*
     apply(system.toClassic, underlyingClient)
   }
 
-  def apply(underlyingClient: StandaloneAhcWSClient)(implicit
-      system: akka.actor.typed.ActorSystem[Nothing]): NacosWSClient = apply(system, underlyingClient)
+  def apply(system: ActorSystem, underlyingClient: StandaloneAhcWSClient): NacosWSClient =
+    new NacosWSClient(system, underlyingClient)
 }

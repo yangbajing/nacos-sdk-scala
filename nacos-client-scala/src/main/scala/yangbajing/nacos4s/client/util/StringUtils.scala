@@ -21,10 +21,12 @@ import scala.annotation.tailrec
 object StringUtils {
   val BLACK_CHAR: Char = ' '
 
+  @inline def isNoneEmpty(s: CharSequence): Boolean = !isEmpty(s)
+
   def isEmpty(s: CharSequence): Boolean =
     (s eq null) || s.length() == 0
 
-  @inline def isNoneEmpty(s: CharSequence): Boolean = !isEmpty(s)
+  @inline def isNoneBlank(s: CharSequence): Boolean = !isBlank(s)
 
   def isBlank(s: CharSequence): Boolean = {
     @tailrec def isNoneBlankChar(s: CharSequence, i: Int): Boolean =
@@ -32,6 +34,4 @@ object StringUtils {
 
     isEmpty(s) || !isNoneBlankChar(s, 0)
   }
-
-  @inline def isNoneBlank(s: CharSequence): Boolean = !isBlank(s)
 }

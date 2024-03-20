@@ -5,9 +5,9 @@
 要在项目中使用，请添加以下依赖：
 
 @@dependency[sbt,Maven,Gradle] {
-  group="me.yangbajing.nacos4s"
-  artifact="nacos-play-ws_$scala.binary_version$"
-  version="$version$"
+group="me.yangbajing.nacos4s"
+artifact="nacos-play-ws_$scala.binary_version$"
+version="$version$"
 }
 
 ## 使用 - 依赖注入
@@ -20,18 +20,22 @@
 
 **Scala API**
 
-@@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala) { #NacosWSClientController }
+@@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala) {
+#NacosWSClientController }
 
 **Java API**
 
-@@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java) { #NacosWSClientController }
+@@snip [NacosWSClient](../../../src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java) {
+#NacosWSClientController }
 
 ## 使用 - 手动创建
 
 **Scala API**
 
-@@snip [NacosWSClientTest](../../../../nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/scaladsl/NacosWSClientTest.scala) { #NacosWSClientTest }
+@@snip [NacosWSClientTest](../../../../nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/scaladsl/NacosWSClientTest.scala) {
+#NacosWSClientTest }
 
 **Java API**
 
-@@snip [NacosWSClientTest](../../../../nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/javadsl/NacosWSClientTest.scala) { #NacosWSClientTest }
+@@snip [NacosWSClientTest](../../../../nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/javadsl/NacosWSClientTest.scala) {
+#NacosWSClientTest }

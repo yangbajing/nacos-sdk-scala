@@ -19,9 +19,9 @@ package yangbajing.nacos4s
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import org.scalatest.{ EitherValues, OptionValues }
+import org.scalatest.{EitherValues, OptionValues}
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 
 trait FusionTestValues extends OptionValues with EitherValues with Matchers
 

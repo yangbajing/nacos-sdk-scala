@@ -1,16 +1,17 @@
-*.scala eol=lf
-*.java  eol=lf
-*.txt   eol=lf
-*.md    eol=lf
-*.conf  eol=lf
-*.json  eol=lf
-*.js    eol=lf
-*.css   eol=lf
-*.jsx   eol=lf
-*.vue   eol=lf
-*.xml   eol=lf
-*.sbt   eol=lf
-*.less  eol=lf
-*.yml   eol=lf
-*.html  eol=lf
-*.svg   eol=lf
+*.scala query working-tree-encoding=UTF-8 eol=lf
+*.java  query working-tree-encoding=UTF-8 eol=lf
+*.txt   query working-tree-encoding=UTF-8 eol=lf
+*.md    query working-tree-encoding=UTF-8 eol=lf
+*.conf  query working-tree-encoding=UTF-8 eol=lf
+*.json  query working-tree-encoding=UTF-8 eol=lf
+*.js    query working-tree-encoding=UTF-8 eol=lf
+*.css   query working-tree-encoding=UTF-8 eol=lf
+*.jsx   query working-tree-encoding=UTF-8 eol=lf
+*.vue   query working-tree-encoding=UTF-8 eol=lf
+*.xml   query working-tree-encoding=UTF-8 eol=lf
+*.sbt   query working-tree-encoding=UTF-8 eol=lf
+*.less  query working-tree-encoding=UTF-8 eol=lf
+*.yml   query working-tree-encoding=UTF-8 eol=lf
+*.html  query working-tree-encoding=UTF-8 eol=lf
+*.svg   query working-tree-encoding=UTF-8 eol=lf
+*.yml   query working-tree-encoding=UTF-8 eol=lf

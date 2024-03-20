@@ -1,12 +1,12 @@
 # Nacos SDK for Scala
 
-@@toc { depth=2 } 
+@@toc { depth=2 }
 
 @@@ index
 
 * [introduction](introduction.md)
 * [quickstart](quickstart.md)
-* [akka](akka-discovery.md)
+* [pekko](pekko-discovery.md)
 * [play-ws](play-ws.md)
 
 @@@

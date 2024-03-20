@@ -1,9 +1,9 @@
 version: '3'
-
+name: nacos
 services:
-  nacos-1.3:
-    container_name: nacos-1.3
-    image: nacos/nacos-server:1.3.1
+  nacos-2.3:
+    container_name: nacos-2.3
+    image: nacos/nacos-server:v2.3.0
     environment:
       - PREFER_HOST_MODE=hostname
       - MODE=standalone
@@ -12,5 +12,6 @@ services:
       - ./software/nacos/custom.properties:/home/nacos/init.d/custom.properties
     ports:
       - "8848:8848"
+      - "9848:9848"
     #restart: on-failure
 

@@ -16,9 +16,9 @@
 
 package yangbajing.nacos4s.play.ws.javadsl;
 
-import akka.stream.javadsl.Source;
-import akka.util.ByteString;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.pekko.stream.javadsl.Source;
+import org.apache.pekko.util.ByteString;
 import org.w3c.dom.Document;
 import play.libs.ws.*;
 import play.libs.ws.ahc.StandaloneAhcWSRequest;
@@ -439,5 +439,40 @@ public class AhcWSRequest implements WSRequest {
     @Override
     public Map<String, List<String>> getQueryParameters() {
         return request.getQueryParameters();
+    }
+
+    @Override
+    public StandaloneWSRequest setDisableUrlEncoding(boolean disableUrlEncoding) {
+        return null;
+    }
+
+    @Override
+    public Optional<Boolean> getDisableUrlEncoding() {
+        return Optional.empty();
+    }
+
+    @Override
+    public String getMethod() {
+        return WSRequest.super.getMethod();
+    }
+
+    @Override
+    public List<WSCookie> getCookies() {
+        return WSRequest.super.getCookies();
+    }
+
+    @Override
+    public Optional<String> getUsername() {
+        return WSRequest.super.getUsername();
+    }
+
+    @Override
+    public Optional<String> getPassword() {
+        return WSRequest.super.getPassword();
+    }
+
+    @Override
+    public Optional<WSAuthScheme> getScheme() {
+        return WSRequest.super.getScheme();
     }
 }

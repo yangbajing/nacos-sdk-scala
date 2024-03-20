@@ -16,9 +16,9 @@
 
 package yangbajing.nacos4s.play.ws.javadsl;
 
-import akka.stream.javadsl.Source;
-import akka.util.ByteString;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.pekko.stream.javadsl.Source;
+import org.apache.pekko.util.ByteString;
 import org.w3c.dom.Document;
 import play.libs.ws.*;
 
@@ -29,7 +29,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AhcWSResponse implements WSResponse {
-    private static final WSBodyReadables readables = new WSBodyReadables() {};
+    private static final WSBodyReadables readables = new WSBodyReadables() {
+    };
 
     private final StandaloneWSResponse underlying;
 
@@ -108,8 +109,8 @@ public class AhcWSResponse implements WSResponse {
     }
 
     /**
-     * @deprecated Deprecated since 2.6.0. Use {@link #getHeaders()} instead.
      * @return the headers
+     * @deprecated Deprecated since 2.6.0. Use {@link #getHeaders()} instead.
      */
     @Override
     @Deprecated
@@ -117,28 +118,36 @@ public class AhcWSResponse implements WSResponse {
         return underlying.getHeaders();
     }
 
-    /** @deprecated Use {@code response.getBody(xml())} */
+    /**
+     * @deprecated Use {@code response.getBody(xml())}
+     */
     @Override
     @Deprecated
     public Document asXml() {
         return underlying.getBody(readables.xml());
     }
 
-    /** @deprecated Use {@code response.getBody(json())} */
+    /**
+     * @deprecated Use {@code response.getBody(json())}
+     */
     @Override
     @Deprecated
     public JsonNode asJson() {
         return underlying.getBody(readables.json());
     }
 
-    /** @deprecated Use {@code response.getBody(inputStream())} */
+    /**
+     * @deprecated Use {@code response.getBody(inputStream())}
+     */
     @Override
     @Deprecated
     public InputStream getBodyAsStream() {
         return underlying.getBody(readables.inputStream());
     }
 
-    /** @deprecated Use {@code response.getBodyAsBytes().toArray()} */
+    /**
+     * @deprecated Use {@code response.getBodyAsBytes().toArray()}
+     */
     @Override
     @Deprecated
     public byte[] asByteArray() {

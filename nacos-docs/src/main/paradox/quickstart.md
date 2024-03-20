@@ -1,15 +1,16 @@
 # Quick Start
 
-Nacos SDK for Scala 基于 Java 客户端 [`nacos-client`](https://nacos.io/zh-cn/docs/sdk.html) 做了封装，使得在 Scala 下更易使用。支持使用 [HOCON](https://github.com/lightbend/config) 做为配置文件，支持 Akka Discovery 和 Play-WS。
+Nacos SDK for Scala 基于 Java 客户端 [`nacos-client`](https://nacos.io/zh-cn/docs/sdk.html) 做了封装，使得在 Scala
+下更易使用。支持使用 [HOCON](https://github.com/lightbend/config) 做为配置文件，支持 Pekko Discovery 和 Play-WS。
 
 ## 依赖
 
 要在项目中使用，请添加以下依赖：
 
 @@dependency[sbt,Maven,Gradle] {
-  group="me.yangbajing.nacos4s"
-  artifact="nacos-client-scala_$scala.binary_version$"
-  version="$version$"
+group="me.yangbajing.nacos4s"
+artifact="nacos-client-scala_$scala.binary_version$"
+version="$version$"
 }
 
 并添加以下依赖源：
@@ -53,10 +54,14 @@ val namingService = Nacos4s.namingService(ConfigFactory.load().getConfig("nacos4
 
 ## 示例
 
-更多 **Nacos4sConfigService** 使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) ：
+更多 **Nacos4sConfigService**
+使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) ：
 
-@@snip [Nacos4sConfigServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) { #ConfigService }
+@@snip [Nacos4sConfigServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/config/Nacos4sConfigServiceTest.scala) {
+#ConfigService }
 
-更多 **Nacos4sNamingService** 使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) ：
+更多 **Nacos4sNamingService**
+使用示例见 [测试](https://github.com/yangbajing/nacos-sdk-scala/blob/master/nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) ：
 
-@@snip [Nacos4sNamingServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) { #NamingService }
+@@snip [Nacos4sNamingServiceTest](../../../../nacos-client-scala/src/test/scala/yangbajing/nacos4s/client/naming/Nacos4sNamingServiceTest.scala) {
+#NamingService }

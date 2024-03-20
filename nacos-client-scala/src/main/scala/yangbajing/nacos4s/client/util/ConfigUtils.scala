@@ -16,11 +16,10 @@
 
 package yangbajing.nacos4s.client.util
 
+import com.typesafe.config.{Config, ConfigObject, ConfigValueType}
+
 import java.util.Properties
 import java.util.concurrent.TimeUnit
-
-import com.typesafe.config.{ Config, ConfigObject, ConfigValueType }
-
 import scala.util.Try
 
 object ConfigUtils {
@@ -53,8 +52,8 @@ object ConfigUtils {
   }
 
   def discoveryConfig(config: Config): Config = {
-    val method = config.getString("akka.discovery.method")
-    if (config.hasPath(s"akka.discovery.$method")) config.getConfig(s"akka.discovery.$method")
+    val method = config.getString("pekkodiscovery.method")
+    if (config.hasPath(s"pekkodiscovery.$method")) config.getConfig(s"pekko.discovery.$method")
     else config.getConfig(method)
   }
 

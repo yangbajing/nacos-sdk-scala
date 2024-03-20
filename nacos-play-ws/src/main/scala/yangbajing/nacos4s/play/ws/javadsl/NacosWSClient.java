@@ -16,10 +16,10 @@
 
 package yangbajing.nacos4s.play.ws.javadsl;
 
-import akka.actor.ActorSystem;
-import akka.actor.typed.javadsl.Adapter;
-import akka.stream.SystemMaterializer;
 import com.alibaba.nacos.api.naming.pojo.Instance;
+import org.apache.pekko.actor.ActorSystem;
+import org.apache.pekko.actor.typed.javadsl.Adapter;
+import org.apache.pekko.stream.SystemMaterializer;
 import play.libs.ws.WSClient;
 import play.libs.ws.WSRequest;
 import play.libs.ws.ahc.StandaloneAhcWSClient;
@@ -44,7 +44,7 @@ public class NacosWSClient implements WSClient {
         namingService = Nacos4s.namingService(system.settings().config().getConfig(Constants.NACOS4S_CLIENT_NAMING()));
     }
 
-    public NacosWSClient(akka.actor.typed.ActorSystem<?> system, StandaloneAhcWSClient client) {
+    public NacosWSClient(org.apache.pekko.actor.typed.ActorSystem<?> system, StandaloneAhcWSClient client) {
         this(Adapter.toClassic(system), client);
     }
 

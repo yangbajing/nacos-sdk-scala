@@ -1,28 +1,11 @@
-val versionScala212 = "2.12.12"
-val versionScala213 = "2.13.3"
-val versionAkka = "2.6.9"
-val versionNacos = "1.3.2"
-val versionPlay = "2.8.2"
-val versionConfig = "1.4.0"
-val versionScalaCollectionCompat = "2.2.0"
-val versionScalatest = "3.2.2"
-
-ThisBuild / scalaVersion := versionScala212
-
-ThisBuild / crossScalaVersions := Seq(versionScala212, versionScala213)
-
-ThisBuild / scalafmtOnCompile := true
-
-ThisBuild / version := "1.3.2"
-
 lazy val root = Project(id = "nacos-sdk-scala", base = file("."))
-  .aggregate(nacosDocs, nacosPlayWs, nacosAkka, nacosClientScala)
-  .settings(skip in publish := true)
+  .aggregate(nacosDocs, nacosPlayWs, nacosPekko, nacosClientScala)
+  .settings(publish / skip := true)
 
 lazy val nacosDocs = _project("nacos-docs")
   .enablePlugins(ParadoxMaterialThemePlugin, GhpagesPlugin)
-  .dependsOn(nacosPlayWs, nacosAkka, nacosClientScala)
-  .settings(skip in publish := true)
+  .dependsOn(nacosPlayWs, nacosPekko, nacosClientScala)
+  .settings(publish / skip := true)
   .settings(
     Compile / paradoxMaterialTheme ~= {
       _.withLanguage(java.util.Locale.SIMPLIFIED_CHINESE)
@@ -30,41 +13,51 @@ lazy val nacosDocs = _project("nacos-docs")
         .withRepository(uri("https://github.com/yangbajing/nacos-sdk-scala"))
         .withSocial(
           uri("http://yangbajing.github.io/nacos-sdk-scala/"),
-          uri("https://github.com/yangbajing"),
-          uri("https://weibo.com/yangbajing"))
+          uri("https://github.com/yangbajing"))
     },
     paradoxProperties ++= Map(
-        "github.base_url" -> s"https://github.com/yangbajing/nacos-sdk-scala/tree/${version.value}",
-        "version" -> version.value,
-        "scala.version" -> scalaVersion.value,
-        "scala.binary_version" -> scalaBinaryVersion.value,
-        "scaladoc.akka.base_url" -> s"http://doc.akka.io/api/$versionAkka",
-        "akka.version" -> versionAkka),
+      "github.base_url" -> s"https://github.com/yangbajing/nacos-sdk-scala/tree/${version.value}",
+      "version" -> version.value,
+      "scala.version" -> scalaVersion.value,
+      "scala.binary_version" -> scalaBinaryVersion.value,
+      "scaladoc.pekko.base_url" -> s"http://doc.pekko.io/api/$versionPekko",
+      "pekko.version" -> versionPekko),
     git.remoteRepo := "https://github.com/yangbajing/nacos-sdk-scala.git",
-    //ThisProject / GitKeys.gitReader := baseDirectory(base => new DefaultReadableGit(base)).value,
+    // ThisProject / GitKeys.gitReader := baseDirectory(base => new DefaultReadableGit(base)).value,
     siteSourceDirectory := target.value / "paradox" / "site" / "main",
     ghpagesNoJekyll := true)
 
 lazy val nacosPlayWs = _project("nacos-play-ws")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
   .settings(libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-stream-typed" % versionAkka,
-      "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
-      ("com.typesafe.play" %% "play-ahc-ws" % versionPlay).excludeAll(ExclusionRule("com.typesafe.akka"))))
+    "org.apache.pekko" %% "pekko-stream-typed" % versionPekko,
+    "org.apache.pekko" %% "pekko-actor-testkit-typed" % versionPekko % Test,
+    ("org.playframework" %% "play-ahc-ws" % versionPlay).excludeAll(ExclusionRule("org.apache.pekko"))))
 
-lazy val nacosAkka = _project("nacos-akka")
+lazy val nacosPekko = _project("nacos-pekko")
   .dependsOn(nacosClientScala % "compile->compile;test->test")
   .settings(
     libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
-        "com.typesafe.akka" %% "akka-discovery" % versionAkka))
+      "org.apache.pekko" %% "pekko-actor-testkit-typed" % versionPekko % Test,
+      "org.apache.pekko" %% "pekko-discovery" % versionPekko))
 
 lazy val nacosClientScala = _project("nacos-client-scala").settings(
   libraryDependencies ++= Seq(
-      "org.scala-lang.modules" %% "scala-collection-compat" % versionScalaCollectionCompat,
-      "com.typesafe" % "config" % versionConfig,
-      "com.alibaba.nacos" % "nacos-client" % versionNacos,
-      "org.scalatest" %% "scalatest" % versionScalatest % Test))
+    "org.scala-lang.modules" %% "scala-collection-compat" % versionScalaCollectionCompat,
+    "com.typesafe" % "config" % versionConfig,
+    "com.alibaba.nacos" % "nacos-client" % versionNacos,
+    "org.scalatest" %% "scalatest" % versionScalatest % Test))
+
+val versionScala3 = "3.3.3"
+val versionPekko = "1.0.2"
+val versionNacos = "2.3.1"
+val versionPlay = "3.0.2"
+val versionConfig = "1.4.3"
+val versionScalaCollectionCompat = "2.11.0"
+val versionScalatest = "3.2.18"
+
+ThisBuild / scalaVersion := versionScala3
+ThisBuild / version := "2.0.0"
 
 def _project(name: String, _base: String = null) =
   Project(id = name, base = file(if (_base eq null) name else _base))
@@ -82,28 +75,20 @@ def basicSettings =
     organizationHomepage := Some(url("https://yangbajing.me")),
     homepage := Some(url("https://yangbajing.github.cn/nacos-sdk-scala")),
     startYear := Some(2020),
-    licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
+    licenses += ("Apache-2.0", new URI("https://www.apache.org/licenses/LICENSE-2.0.txt").toURL),
     headerLicense := Some(HeaderLicense.ALv2("2020", "me.yangbajing")),
-    scalacOptions ++= {
-      val list = Seq(
-        "-encoding",
-        "UTF-8", // yes, this is 2 args
-        "-feature",
-        "-deprecation",
-        "-unchecked",
-        "-Xlint",
-        "-opt:l:inline",
-        "-opt-inline-from",
-        "-Ywarn-dead-code")
-      (if (scalaVersion.value.startsWith("2.12")) "-target:jvm-1.8" else "-target:8") +: list
-    },
-    javacOptions in Compile ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
-    javaOptions in run ++= Seq("-Xms128m", "-Xmx1024m", "-Djava.library.path=./target/native"),
+    scalacOptions ++= Seq(
+      "-encoding",
+      "UTF-8", // yes, this is 2 args
+      "-feature",
+      "-deprecation",
+      "-unchecked"),
+    run / javaOptions ++= Seq("-Xms128m", "-Xmx1024m", "-Djava.library.path=./target/native"),
     shellPrompt := { s =>
       Project.extract(s).currentProject.id + " > "
     },
-    test in assembly := {},
-    assemblyMergeStrategy in assembly := {
+    assembly / test := {},
+    assembly / assemblyMergeStrategy := {
       case PathList("javax", "servlet", xs @ _*)                => MergeStrategy.first
       case PathList("io", "netty", xs @ _*)                     => MergeStrategy.first
       case PathList("jnr", xs @ _*)                             => MergeStrategy.first
@@ -116,25 +101,25 @@ def basicSettings =
       case PathList("org", "slf4j", xs @ _*)                    => MergeStrategy.first
       case "META-INF/native/libnetty-transport-native-epoll.so" => MergeStrategy.first
       case x =>
-        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        val oldStrategy = (assembly / assemblyMergeStrategy).value
         oldStrategy(x)
     },
-    libraryDependencies ++= Seq("ch.qos.logback" % "logback-classic" % "1.2.3" % Test),
-    fork in run := true,
-    fork in Test := true,
-    parallelExecution in Test := false)
+    libraryDependencies ++= Seq("ch.qos.logback" % "logback-classic" % "1.5.3" % Test),
+    run / fork := true,
+    Test / fork := true,
+    Test / parallelExecution := false)
 
 def publishing =
   Seq(
-    bintrayOrganization := Some("helloscala"),
-    bintrayRepository := "maven",
+//    bintrayOrganization := Some("helloscala"),
+//    bintrayRepository := "maven",
     developers := List(
-        Developer(
-          id = "yangbajing",
-          name = "Yang Jing",
-          email = "yang.xunjing@qq.com",
-          url = url("https://github.com/yangbajing"))),
+      Developer(
+        id = "yangbajing",
+        name = "Yang Jing",
+        email = "yang.xunjing@qq.com",
+        url = url("https://github.com/yangbajing"))),
     scmInfo := Some(
-        ScmInfo(
-          url("https://github.com/yangbajing/nacos-sdk-scala"),
-          "scm:git:git@github.com:yangbajing/nacos-sdk-scala.git")))
+      ScmInfo(
+        url("https://github.com/yangbajing/nacos-sdk-scala"),
+        "scm:git:git@github.com:yangbajing/nacos-sdk-scala.git")))

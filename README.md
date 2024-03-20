@@ -1,21 +1,20 @@
 # nacos-sdk-scala
 
-支持 Scala 2.12, 2.13。
+支持 3, nacos 2。
 
 ```sbt
-resolvers += Resolver.jcenterRepo
-
 // Scala API
 libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-client-scala" % <version>
 
-// Akka Discovery
-libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-akka" % <version>
+// Pekko Discovery
+libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-pekko" % <version>
 
 // Play WS
 libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % <version>
 ```
 
-*`<version>` 修改为实际版本号，请见 [https://github.com/yangbajing/nacos-sdk-scala/releases](https://github.com/yangbajing/nacos-sdk-scala/releases) 。*
+*`<version>`
+修改为实际版本号，请见 [https://github.com/yangbajing/nacos-sdk-scala/releases](https://github.com/yangbajing/nacos-sdk-scala/releases) 。*
 
 ## 阅读文档
 

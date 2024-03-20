@@ -16,29 +16,29 @@
 
 package yangbajing.nacos4s.client.util
 
-import java.net._
-
-import scala.jdk.CollectionConverters._
+import java.net.*
+import scala.jdk.CollectionConverters.*
 import scala.util.Try
 
 object NetworkUtils {
-  private val validNetworkNamePrefixes = List("eth", "enp", "wlp")
-  def validNetworkName(name: String): Boolean = validNetworkNamePrefixes.exists(prefix => name.startsWith(prefix))
+  private val validNetworkNamePrefixes = List("eth", "enp", "wlp", /*Mac*/ "en")
 
-  def interfaces(): Vector[NetworkInterface] = NetworkInterface.getNetworkInterfaces.asScala.toVector
-
-  def onlineNetworkInterfaces(): Vector[NetworkInterface] = {
-    interfaces().filterNot(ni =>
-      ni.isLoopback || !ni.isUp || ni.isVirtual || ni.isPointToPoint || !validNetworkName(ni.getName))
+  def firstOnlineInet4Address(): Option[InetAddress] = {
+    onlineInterfaceAddress().view.filter(ia => ia.getAddress.isInstanceOf[Inet4Address]).map(_.getAddress).headOption
   }
 
   def onlineInterfaceAddress(): Vector[InterfaceAddress] = {
     onlineNetworkInterfaces().flatMap(i => i.getInterfaceAddresses.asScala)
   }
 
-  def firstOnlineInet4Address(): Option[InetAddress] = {
-    onlineInterfaceAddress().view.filter(ia => ia.getAddress.isInstanceOf[Inet4Address]).map(_.getAddress).headOption
+  def onlineNetworkInterfaces(): Vector[NetworkInterface] = {
+    interfaces().filterNot(ni =>
+      ni.isLoopback || !ni.isUp || ni.isVirtual || ni.isPointToPoint || !validNetworkName(ni.getName))
   }
+
+  def validNetworkName(name: String): Boolean = validNetworkNamePrefixes.exists(prefix => name.startsWith(prefix))
+
+  def interfaces(): Vector[NetworkInterface] = NetworkInterface.getNetworkInterfaces.asScala.toVector
 
   def toInetSocketAddress(address: String, defaultPort: Int): InetSocketAddress =
     address.split(':') match {

@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package yangbajing.nacos4s.akka
+package yangbajing.nacos4s.pekko
 
-import akka.actor.ActorSystem
-import akka.discovery.ServiceDiscovery.{ DiscoveryTimeoutException, Resolved, ResolvedTarget }
-import akka.discovery.{ Lookup, ServiceDiscovery }
-import yangbajing.nacos4s.client.util.{ ConfigUtils, Constants, Nacos4s }
+import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.discovery.ServiceDiscovery.{DiscoveryTimeoutException, Resolved, ResolvedTarget}
+import org.apache.pekko.discovery.{Lookup, ServiceDiscovery}
+import yangbajing.nacos4s.client.util.{ConfigUtils, Constants, Nacos4s}
 
 import scala.concurrent.duration.FiniteDuration
-import scala.concurrent.{ Future, Promise }
+import scala.concurrent.{Future, Promise}
 import scala.util.Success
 
 class NacosServiceDiscovery(system: ActorSystem) extends ServiceDiscovery {
   import system.dispatcher
   private val discoveryConfig = ConfigUtils.discoveryConfig(system.settings.config)
-  private def namingConfig = {
-    val path = discoveryConfig.getString(Constants.NAMING_CONFIG)
-    if (discoveryConfig.hasPath(path)) discoveryConfig.getConfig(path) else system.settings.config.getConfig(path)
-  }
   private val oneHealth = discoveryConfig.getBoolean(Constants.ONE_HEALTH)
   private val onlyHealth = discoveryConfig.getBoolean(Constants.ONLY_HEALTH)
   private val namingService = Nacos4s.namingService(namingConfig)
@@ -53,9 +49,9 @@ class NacosServiceDiscovery(system: ActorSystem) extends ServiceDiscovery {
   }
 
   @inline private def resolveAndTimeout(
-      lookup: Lookup,
-      resolveTimeout: FiniteDuration,
-      f: Future[Resolved]): Future[Resolved] = {
+    lookup: Lookup,
+    resolveTimeout: FiniteDuration,
+    f: Future[Resolved]): Future[Resolved] = {
     val promise = Promise[Resolved]()
     val cancellable = system.scheduler.scheduleOnce(resolveTimeout) {
       promise.failure(
@@ -65,5 +61,10 @@ class NacosServiceDiscovery(system: ActorSystem) extends ServiceDiscovery {
     Future.firstCompletedOf(List(f, promise.future)).andThen {
       case Success(_) if !cancellable.isCancelled => cancellable.cancel()
     }
+  }
+
+  private def namingConfig = {
+    val path = discoveryConfig.getString(Constants.NAMING_CONFIG)
+    if (discoveryConfig.hasPath(path)) discoveryConfig.getConfig(path) else system.settings.config.getConfig(path)
   }
 }

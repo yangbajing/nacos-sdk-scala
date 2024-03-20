@@ -16,19 +16,18 @@
 
 package yangbajing.nacos4s.client.naming
 
-import java.io.IOException
-import java.util.Properties
-
 import com.alibaba.nacos.api.PropertyKeyConst
 import com.alibaba.nacos.api.naming.NamingService
 import com.alibaba.nacos.api.naming.listener.EventListener
-import com.alibaba.nacos.api.naming.pojo.{ Instance, ListView, ServiceInfo }
+import com.alibaba.nacos.api.naming.pojo.{Instance, ListView, ServiceInfo}
 import com.alibaba.nacos.api.selector.AbstractSelector
-import yangbajing.nacos4s.client.util.CollectionUtils._
+import yangbajing.nacos4s.client.util.CollectionUtils.*
 import yangbajing.nacos4s.client.util.ConfigUtils.RichProperties
 import yangbajing.nacos4s.client.util.NetworkUtils
 
-import scala.jdk.CollectionConverters._
+import java.io.IOException
+import java.util.Properties
+import scala.jdk.CollectionConverters.*
 
 class Nacos4sNamingService(val underlying: NamingService, val props: Properties) {
   val autoRegisterInstance: Boolean = props.getBoolean("autoRegisterInstance").getOrElse(false)
@@ -106,10 +105,10 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
     underlying.getAllInstances(serviceName, clusters.asJavaList, subscribe).asScala.toVector
 
   def getAllInstances(
-      serviceName: String,
-      groupName: String,
-      clusters: Iterable[String],
-      subscribe: Boolean): Iterable[Instance] =
+    serviceName: String,
+    groupName: String,
+    clusters: Iterable[String],
+    subscribe: Boolean): Iterable[Instance] =
     underlying.getAllInstances(serviceName, groupName, clusters.asJavaList, subscribe).asScala.toVector
 
   def selectInstances(serviceName: String, healthy: Boolean): Iterable[Instance] =
@@ -122,35 +121,35 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
     underlying.selectInstances(serviceName, healthy, subscribe).asScala.toVector
 
   def selectInstances(
-      serviceName: String,
-      groupName: String,
-      healthy: Boolean,
-      subscribe: Boolean): Iterable[Instance] =
+    serviceName: String,
+    groupName: String,
+    healthy: Boolean,
+    subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, healthy, subscribe).asScala.toVector
 
   def selectInstances(serviceName: String, clusters: Iterable[String], healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, clusters.asJavaList, healthy).asScala.toVector
 
   def selectInstances(
-      serviceName: String,
-      groupName: String,
-      clusters: Iterable[String],
-      healthy: Boolean): Iterable[Instance] =
+    serviceName: String,
+    groupName: String,
+    clusters: Iterable[String],
+    healthy: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, clusters.asJavaList, healthy).asScala.toVector
 
   def selectInstances(
-      serviceName: String,
-      clusters: Iterable[String],
-      healthy: Boolean,
-      subscribe: Boolean): Iterable[Instance] =
+    serviceName: String,
+    clusters: Iterable[String],
+    healthy: Boolean,
+    subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, clusters.asJavaList, healthy, subscribe).asScala.toVector
 
   def selectInstances(
-      serviceName: String,
-      groupName: String,
-      clusters: Iterable[String],
-      healthy: Boolean,
-      subscribe: Boolean): Iterable[Instance] =
+    serviceName: String,
+    groupName: String,
+    clusters: Iterable[String],
+    healthy: Boolean,
+    subscribe: Boolean): Iterable[Instance] =
     underlying.selectInstances(serviceName, groupName, clusters.asJavaList, healthy, subscribe).asScala.toVector
 
   def selectOneHealthyInstance(serviceName: String): Instance = underlying.selectOneHealthyInstance(serviceName)
@@ -174,10 +173,10 @@ class Nacos4sNamingService(val underlying: NamingService, val props: Properties)
     underlying.selectOneHealthyInstance(serviceName, clusters.asJavaList, subscribe)
 
   def selectOneHealthyInstance(
-      serviceName: String,
-      groupName: String,
-      clusters: Iterable[String],
-      subscribe: Boolean): Instance =
+    serviceName: String,
+    groupName: String,
+    clusters: Iterable[String],
+    subscribe: Boolean): Instance =
     underlying.selectOneHealthyInstance(serviceName, groupName, clusters.asJavaList, subscribe)
 
   def subscribe(serviceName: String, listener: EventListener): Unit = underlying.subscribe(serviceName, listener)

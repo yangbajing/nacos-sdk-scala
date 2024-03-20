@@ -17,8 +17,9 @@
 package docs.play.ws.scaladsl
 
 // #NacosWSClientController
-import javax.inject.{ Inject, Named }
 import play.api.libs.ws.WSClient
+
+import javax.inject.{Inject, Named}
 
 class NacosWSClientController @Inject() (@Named("nacos") wsClient: WSClient) {
   def page = {

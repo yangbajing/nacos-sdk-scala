@@ -16,14 +16,14 @@
 
 package yangbajing.nacos4s.client.util
 
-import java.util.Properties
-
 import com.alibaba.nacos.api.PropertyKeyConst
 import com.alibaba.nacos.client.config.NacosConfigService
 import com.alibaba.nacos.client.naming.NacosNamingService
 import com.typesafe.config.Config
 import yangbajing.nacos4s.client.config.Nacos4sConfigService
 import yangbajing.nacos4s.client.naming.Nacos4sNamingService
+
+import java.util.Properties
 
 object Nacos4s {
   def configService(servAddrList: String, namespace: String): Nacos4sConfigService = {
@@ -33,9 +33,9 @@ object Nacos4s {
     configService(props)
   }
 
-  def configService(config: Config): Nacos4sConfigService = configService(ConfigUtils.toProperties(config))
-
   def configService(props: Properties): Nacos4sConfigService = new Nacos4sConfigService(new NacosConfigService(props))
+
+  def configService(config: Config): Nacos4sConfigService = configService(ConfigUtils.toProperties(config))
 
   def namingService(servAddrList: String, namespace: String): Nacos4sNamingService = {
     val props = new Properties()

@@ -16,11 +16,12 @@
 
 package yangbajing.nacos4s.play.ws.javadsl
 
-import akka.actor.ActorSystem
-import javax.inject.{ Inject, Provider, Singleton }
-import play.api.inject.{ SimpleModule, bind }
+import org.apache.pekko.actor.ActorSystem
+import play.api.inject.{bind, SimpleModule}
 import play.libs.ws.WSClient
 import play.libs.ws.ahc.StandaloneAhcWSClient
+
+import javax.inject.{Inject, Provider, Singleton}
 
 class Nacos4sWSModule
     extends SimpleModule(

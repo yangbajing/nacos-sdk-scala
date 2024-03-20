@@ -16,26 +16,25 @@
 
 package yangbajing.nacos4s.play.ws.javadsl
 
-import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-import akka.stream.SystemMaterializer
+import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.apache.pekko.stream.SystemMaterializer
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.slf4j.LoggerFactory
 import play.libs.ws.ahc.StandaloneAhcWSClient
 import play.shaded.ahc.org.asynchttpclient.DefaultAsyncHttpClient
 
-import scala.compat.java8.FutureConverters._
-
 class NacosWSClientTest
-    extends ScalaTestWithActorTestKit("akka.actor.testkit.typed.default-timeout = 60.seconds")
+    extends ScalaTestWithActorTestKit("pekko.actor.testkit.typed.default-timeout = 60.seconds")
     with AnyWordSpecLike {
   private val log = LoggerFactory.getLogger(classOf[NacosWSClientTest])
   "NacosWSClient" should {
     "WSClient" in {
+      import scala.jdk.FutureConverters.given
       // #NacosWSClientTest
       val ahcWSClient = new StandaloneAhcWSClient(new DefaultAsyncHttpClient(), SystemMaterializer(system).materializer)
       val wsClient = new NacosWSClient(system, ahcWSClient)
       val begin = System.currentTimeMillis()
-      val response = wsClient.url("https://github.com/yangbajing/nacos-sdk-scala").get().toScala.futureValue
+      val response = wsClient.url("https://github.com/yangbajing/nacos-sdk-scala").get().asScala.futureValue
       val end = System.currentTimeMillis()
       log.debug(s"Cost time ${end - begin}ms.")
       response.getStatus shouldBe 200

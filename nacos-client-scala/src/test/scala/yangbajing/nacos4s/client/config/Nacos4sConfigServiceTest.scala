@@ -16,17 +16,18 @@
 
 package yangbajing.nacos4s.client.config
 
-import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
-
 import com.alibaba.nacos.api.config.listener.AbstractListener
 import com.typesafe.config.ConfigFactory
 import yangbajing.nacos4s.FusionWordSpecLike
 import yangbajing.nacos4s.client.util.Nacos4s
 
+import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
+
 class Nacos4sConfigServiceTest extends FusionWordSpecLike {
   // #ConfigService
-  private val configService = Nacos4s.configService(ConfigFactory.parseString("""{
+  private val configService = Nacos4s.configService(ConfigFactory.parseString(
+    """{
       |  serverAddr = "127.0.0.1:8848"
       |  namespace = ""
       |}""".stripMargin))
@@ -40,12 +41,9 @@ class Nacos4sConfigServiceTest extends FusionWordSpecLike {
         println(s"[${OffsetDateTime.now()}] Received new config is:\n$configInfo")
       }
     }
+
     "getServerStatus" in {
       configService.getServerStatus shouldBe "UP"
-    }
-
-    "addListener" in {
-      configService.addListener(dataId, group, listener)
     }
 
     "publishConfig" in {
@@ -56,6 +54,10 @@ class Nacos4sConfigServiceTest extends FusionWordSpecLike {
                       |}""".stripMargin
       configService.publishConfig(dataId, group, content) shouldBe true
       TimeUnit.SECONDS.sleep(1)
+    }
+
+    "addListener" in {
+      configService.addListener(dataId, group, listener)
     }
 
     "getConfig" in {

@@ -101,6 +101,8 @@ logs/
 *.tmp
 *.bak
 !/sbt-dist/bin/
+.bsp/
+.vscode/
 
 standalone-logs/
 node_modules/

@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package yangbajing.nacos4s.akka
+package yangbajing.nacos4s.pekko
 
-import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-import akka.discovery.Discovery
+import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.apache.pekko.discovery.Discovery
 import org.scalatest.wordspec.AnyWordSpecLike
-import scala.concurrent.duration._
+
+import scala.concurrent.duration.*
 
 // #NacosServiceDiscoveryTest
 class NacosServiceDiscoveryTest extends ScalaTestWithActorTestKit("""
-akka.actor.testkit.typed {
+pekko.actor.testkit.typed {
   default-timeout = 10.seconds
 }
-akka.discovery {
+pekko.discovery {
   method = nacos
   nacos {
     onlyHealth = true
