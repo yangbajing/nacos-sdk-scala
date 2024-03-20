@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="nacos-docs">
-<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.7.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -141,7 +141,7 @@ yangbajing/nacos-sdk-scala
 <ul>
   <li><a href="introduction.html" class="active page">导读</a></li>
   <li><a href="quickstart.html" class="page">Quick Start</a></li>
-  <li><a href="akka-discovery.html" class="page">Akka Discovery</a></li>
+  <li><a href="pekko-discovery.html" class="page">Pekko Discovery</a></li>
   <li><a href="play-ws.html" class="page">Play WS</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
@@ -160,7 +160,7 @@ yangbajing/nacos-sdk-scala
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> 1.3.2
+<i class="md-icon" title="Version">label_outline</i> 2.0.0*
 </label>
 </li>
 </ul>
@@ -190,8 +190,8 @@ yangbajing/nacos-sdk-scala
 <div class="md-content__searchable">
 <h1><a href="#导读" name="导读" class="anchor"><span class="anchor-link"></span></a>导读</h1>
 <h2><a href="#概览" name="概览" class="anchor"><span class="anchor-link"></span></a>概览</h2>
-<p>Nacos SDK for Scala 是基于 <a href="https://nacos.io/zh-cn/docs/sdk.html">Nacos Java SDK</a> 的封装，使得在 Scala 下更易使用。 支持使用 <a href="https://link.zhihu.com/?target=https%3A//github.com/lightbend/config">HOCON</a> 做为配置文件，支持 <a href="https://doc.akka.io/docs/akka/current/discovery/index.html">Akka Discovery</a> 和 <a href="https://www.playframework.com/documentation/2.8.x/ScalaWS">Play-WS</a> 。</p>
-<p>Nacos SDK for Scala 既可以 <strong><em>将 Nacos 引入 Scala 生态环境</em></strong>，作为微服务应用里的配置管理和服务发现机制。同时，也可以 <strong><em>将 Scala/Akka/Play 引入 Java 以及 Spring 微服务环境</em></strong>，可以让你在微服务开发中混合使用 Java/Spring Cloud、Scala 应用、 Akka 应用和 Play 应用。它们都通过 Nacos 作为统一的配置管理和服务发现机制。</p>
+<p>Nacos SDK for Scala 是基于 <a href="https://nacos.io/zh-cn/docs/sdk.html">Nacos Java SDK</a> 的封装，使得在 Scala 下更易使用。 支持使用 <a href="https://link.zhihu.com/?target=https%3A//github.com/lightbend/config">HOCON</a> 做为配置文件，支持 <a href="https://pekko.apache.org/docs/pekko/current/discovery/index.html">Pekko Discovery</a> 和 <a href="https://www.playframework.com/documentation/3.0.x/ScalaWS">Play-WS</a> 。</p>
+<p>Nacos SDK for Scala 既可以 <strong><em>将 Nacos 引入 Scala 生态环境</em></strong>，作为微服务应用里的配置管理和服务发现机制。同时，也可以 <strong><em>将 Scala/Pekko/Play 引入 Java 以及 Spring 微服务环境</em></strong>，可以让你在微服务开发中混合使用 Java/Spring Cloud、Scala 应用、 Pekko 应用和 Play 应用。它们都通过 Nacos 作为统一的配置管理和服务发现机制。</p>
 <p>要快速上手请访问： <a href="quickstart.html">Quick Start</a> 。</p>
 <p><em>对于很多 Scala 爱好者，若公司主要使用 Spring 进行业务开发，恰好又使用 Nacos 作为配置管理与服务发现工具。那你可以使用此 SDK 将使用 Scala 实现的服务接入公司的 Spring 生态里。</em></p>
 <h2><a href="#背景" name="背景" class="anchor"><span class="anchor-link"></span></a>背景</h2>
@@ -202,22 +202,22 @@ yangbajing/nacos-sdk-scala
   <li><strong>可单独使用</strong>：纯 Scala 应用也可以使用</li>
   <li><strong>支持 Spring Cloud</strong>：团队里大部分成员都有 Spring 开发经验</li>
 </ul>
-<p>这样，在 2019 对公司产品进行微服务改造时就选择了 Nacos，并将消息、任务调度、文件、日志等工具性质的服务使用 Scala/Akka 实现，其余业务服务继续 使用 Spring。Spring 与 Scala 服务之间通过 gRPC 相互调用，文件服务因需要向公网提供接口，使用 Akka HTTP 提供了 RESTful 服务 （有兴趣的读者可以参阅作者翻译的 Akka HTTP 中文文档：<a href="https://www.yangbajing.me/akka-http/">https://www.yangbajing.me/akka-http/</a>）。</p>
+<p>这样，在 2019 对公司产品进行微服务改造时就选择了 Nacos，并将消息、任务调度、文件、日志等工具性质的服务使用 Scala/Pekko 实现，其余业务服务继续 使用 Spring。Spring 与 Scala 服务之间通过 gRPC 相互调用，文件服务因需要向公网提供接口，使用 Pekko HTTP 提供了 RESTful 服务 （有兴趣的读者可以参阅作者翻译的 Pekko HTTP 中文文档：<a href="https://www.yangbajing.me/akka-http/">https://www.yangbajing.me/akka-http/</a>）。</p>
 <h2><a href="#关于作者" name="关于作者" class="anchor"><span class="anchor-link"></span></a>关于作者</h2>
-<p>作者是一个 Java/Scala 程序员，在日常工作中大量使用 Scala/Akka。</p>
+<p>作者是一个 Java/Scala 程序员，在日常工作中大量使用 Scala/Pekko。</p>
 <ul>
   <li>博客：<a href="https://www.yangbajing.me/">https://www.yangbajing.me/</a></li>
   <li>知乎专栏：<a href="https://zhuanlan.zhihu.com/yangbajing">https://zhuanlan.zhihu.com/yangbajing</a></li>
 </ul>
 </div>
 <div>
-<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/paradox/introduction.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-docs/src/main/paradox/introduction.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-1.3.2
+2.0.0*
 </span>
 </div>
 </article>
@@ -261,11 +261,11 @@ Quick Start
 Powered by
 <a href="https://github.com/lightbend/paradox">Paradox</a>
 and
-<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+<a href="https://sbt.github.io/sbt-paradox-material-theme/">Paradox Material Theme</a>
 
 </div>
 <div class="md-footer-social">
-<a href="http://yangbajing.github.io/nacos-sdk-scala/" class="md-footer-social__link fa fa-globe"></a><a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="http://yangbajing.github.io/nacos-sdk-scala/" class="md-footer-social__link fa fa-globe"></a><a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a>
 </div>
 
 </div>

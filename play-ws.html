@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="nacos-docs">
-<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.7.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -141,7 +141,7 @@ yangbajing/nacos-sdk-scala
 <ul>
   <li><a href="introduction.html" class="page">导读</a></li>
   <li><a href="quickstart.html" class="page">Quick Start</a></li>
-  <li><a href="akka-discovery.html" class="page">Akka Discovery</a></li>
+  <li><a href="pekko-discovery.html" class="page">Pekko Discovery</a></li>
   <li><a href="play-ws.html" class="active page">Play WS</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
@@ -160,7 +160,7 @@ yangbajing/nacos-sdk-scala
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> 1.3.2
+<i class="md-icon" title="Version">label_outline</i> 2.0.0*
 </label>
 </li>
 </ul>
@@ -190,23 +190,26 @@ yangbajing/nacos-sdk-scala
 <div class="md-content__searchable">
 <h1><a href="#play-ws" name="play-ws" class="anchor"><span class="anchor-link"></span></a>Play WS</h1>
 <h2><a href="#依赖" name="依赖" class="anchor"><span class="anchor-link"></span></a>依赖</h2>
-<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "1.3.2"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
-  &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
-  &lt;artifactId&gt;nacos-play-ws_2.12&lt;/artifactId&gt;
-  &lt;version&gt;1.3.2&lt;/version&gt;
-&lt;/dependency&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
-  compile group: 'me.yangbajing.nacos4s', name: 'nacos-play-ws_2.12', version: '1.3.2'
+<p>要在项目中使用，请添加以下依赖：</p><dl class="dependency"><dt>sbt</dt><dd><pre class="prettyprint"><code class="language-scala">libraryDependencies += "me.yangbajing.nacos4s" %% "nacos-play-ws" % "2.0.0-SNAPSHOT"</code></pre></dd><dt>Maven</dt><dd><pre class="prettyprint"><code class="language-xml">&lt;dependencies&gt
+  &lt;dependency&gt;
+    &lt;groupId&gt;me.yangbajing.nacos4s&lt;/groupId&gt;
+    &lt;artifactId&gt;nacos-play-ws_3&lt;/artifactId&gt;
+    &lt;version&gt;2.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt
+&lt;/dependencies&gt;</code></pre></dd><dt>Gradle</dt><dd><pre class="prettyprint"><code class="language-gradle">dependencies {
+  implementation "me.yangbajing.nacos4s:nacos-play-ws_3:2.0.0-SNAPSHOT"
 }</code></pre></dd></dl>
 <h2><a href="#使用-依赖注入" name="使用-依赖注入" class="anchor"><span class="anchor-link"></span></a>使用 - 依赖注入</h2>
 <p>并在 <code>application.conf</code> 配置文件中启用 <code>NacosWSModule</code> 模块。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-play-ws/src/main/resources/reference.conf" target="_blank" title="Go to snippet source"></a><code class="language-conf">play.modules {
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-play-ws/src/main/resources/reference.conf" target="_blank" title="Go to snippet source">source</a><code class="language-conf">play.modules {
   enabled += &quot;yangbajing.nacos4s.play.ws.scaladsl.Nacos4sWSModule&quot;
   enabled += &quot;yangbajing.nacos4s.play.ws.javadsl.Nacos4sWSModule&quot;
 }</code></pre>
 <p>与原生的 play-ws 使用唯一的区别就是在 <strong>Inject</strong> 时添加 <code>@Named(&quot;nacos&quot;)</code> 注解。</p>
 <p><strong>Scala API</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala#L20-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">import javax.inject.{ Inject, Named }
-import play.api.libs.ws.WSClient
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-docs/src/main/scala/docs/play/ws/scaladsl/NacosWSClientController.scala#L20-L28" target="_blank" title="Go to snippet source">source</a><code class="language-scala">import play.api.libs.ws.WSClient
+
+import javax.inject.{Inject, Named}
 
 class NacosWSClientController @Inject() (@Named(&quot;nacos&quot;) wsClient: WSClient) {
   def page = {
@@ -214,7 +217,7 @@ class NacosWSClientController @Inject() (@Named(&quot;nacos&quot;) wsClient: WSC
   }
 }</code></pre>
 <p><strong>Java API</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java#L20-L37" target="_blank" title="Go to snippet source"></a><code class="language-java">import play.libs.ws.WSClient;
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-docs/src/main/scala/docs/play/ws/javadsl/NacosWSClientController.java#L20-L38" target="_blank" title="Go to snippet source">source</a><code class="language-java"><br/>import play.libs.ws.WSClient;
 import play.libs.ws.WSRequest;
 
 import javax.inject.Inject;
@@ -234,28 +237,28 @@ public class NacosWSClientController {
 }</code></pre>
 <h2><a href="#使用-手动创建" name="使用-手动创建" class="anchor"><span class="anchor-link"></span></a>使用 - 手动创建</h2>
 <p><strong>Scala API</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/scaladsl/NacosWSClientTest.scala#L33-L36" target="_blank" title="Go to snippet source"></a><code class="language-scala">val wsClient = NacosWSClient(StandaloneAhcWSClient())
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/scaladsl/NacosWSClientTest.scala#L33-L36" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val wsClient = NacosWSClient(StandaloneAhcWSClient())
 val response = wsClient.url(&quot;https://github.com/yangbajing/nacos-sdk-scala&quot;).get().futureValue
 response.status shouldBe 200
 wsClient.close()</code></pre>
 <p><strong>Java API</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/javadsl/NacosWSClientTest.scala#L35-L42" target="_blank" title="Go to snippet source"></a><code class="language-scala">val ahcWSClient = new StandaloneAhcWSClient(new DefaultAsyncHttpClient(), SystemMaterializer(system).materializer)
+<pre class="prettyprint"><button class="snippet-button copy-snippet" title="Copy snippet to clipboard">copy</button><a class="snippet-button go-to-source" href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-play-ws/src/test/scala/yangbajing/nacos4s/play/ws/javadsl/NacosWSClientTest.scala#L34-L41" target="_blank" title="Go to snippet source">source</a><code class="language-scala">val ahcWSClient = new StandaloneAhcWSClient(new DefaultAsyncHttpClient(), SystemMaterializer(system).materializer)
 val wsClient = new NacosWSClient(system, ahcWSClient)
 val begin = System.currentTimeMillis()
-val response = wsClient.url(&quot;https://github.com/yangbajing/nacos-sdk-scala&quot;).get().toScala.futureValue
+val response = wsClient.url(&quot;https://github.com/yangbajing/nacos-sdk-scala&quot;).get().asScala.futureValue
 val end = System.currentTimeMillis()
 log.debug(s&quot;Cost time ${end - begin}ms.&quot;)
 response.getStatus shouldBe 200
 wsClient.close()</code></pre>
 </div>
 <div>
-<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/master/nacos-docs/src/main/paradox/play-ws.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/nacos-sdk-scala/tree/2.0.0-SNAPSHOT/nacos-docs/src/main/paradox/play-ws.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-1.3.2
+2.0.0*
 </span>
 </div>
 </article>
@@ -265,7 +268,7 @@ Edit this page
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a href="akka-discovery.html" title="Akka Discovery" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<a href="pekko-discovery.html" title="Pekko Discovery" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -274,7 +277,7 @@ Edit this page
 <span class="md-footer-nav__direction">
 Previous
 </span>
-Akka Discovery
+Pekko Discovery
 </span>
 </div>
 </a>
@@ -286,11 +289,11 @@ Akka Discovery
 Powered by
 <a href="https://github.com/lightbend/paradox">Paradox</a>
 and
-<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+<a href="https://sbt.github.io/sbt-paradox-material-theme/">Paradox Material Theme</a>
 
 </div>
 <div class="md-footer-social">
-<a href="http://yangbajing.github.io/nacos-sdk-scala/" class="md-footer-social__link fa fa-globe"></a><a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="http://yangbajing.github.io/nacos-sdk-scala/" class="md-footer-social__link fa fa-globe"></a><a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a>
 </div>
 
 </div>
